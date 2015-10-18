@@ -1,0 +1,11 @@
+bower_components/
+node_modules/
+bower_components
+src/bower_components/
+src/lib/
+src/oldjs
+build/
+coverage/
+_SpecRunner.html
+.grunt/
+src/jspm_packages

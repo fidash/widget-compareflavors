@@ -1,0 +1,59 @@
+.nav.nav-pills > li {
+    border: 0;
+}
+
+.nav.nav-pills li:not(:last-child) {
+    border-bottom: 1px solid #ccc;
+    border-radius: 0;
+}
+.nav.nav-pills li {
+    border-radius: 0; /* avoid curved divisor corner */
+}
+
+.nav-stacked > li + li {
+    margin-top: 0px;
+}
+
+a:focus {
+    outline: none;
+}
+
+.btn:focus {
+    outline: none;
+}
+
+button:active, .button:active, button:focus, .button:focus, button:hover, .button:hover{
+  border:none !important;
+  outline:none !important;
+}
+
+nav.collapse.in {
+    border: 1px solid #ccc;
+    margin-top: 4px;
+    /* overflow-y: scroll; */
+    /* max-height: 100vh; */
+}
+
+.btn-toolbar > .btn {
+    float: none;
+}
+
+.myheader {
+    /* background-color: #F1F1F2; */
+    background-color: #F8F8F8;
+    border: 1px solid #E7E7E7; /* 1px solid #ccc; */
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    margin-left: 0px;
+    margin-bottom: 1px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+}
+
+.compareBtn {
+    position: fixed;
+    bottom: 0px;
+    margin: auto;
+    left: 0;
+    right: 0;
+}

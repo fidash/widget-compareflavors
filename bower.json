@@ -1,0 +1,12 @@
+{
+    "name": "flavor-comparator",
+    "dependencies": {
+        "bootstrap": "~3.3.0"
+    },
+    "exportsOverride": {
+        "bootstrap": {
+            "css": "dist/css/bootstrap.min.css",
+            "js": "dist/js/bootstrap.min.js"
+        }
+    }
+}
