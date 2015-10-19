@@ -51,18 +51,46 @@ const publicPrivateSelector = createSelector(
     }
 );
 
+function otherEqual({left, right}, {publicflavors, privateflavors}) {
+    if ((left === "" && right === "") || (left !== "" && right !== "")) {
+        return {
+            equalleft: [],
+            equalright: []
+        };
+    }
+    const filterEqualMap = (list, elem) => list.
+              filter(x => flavorsEqual(x, elem)).
+              map(x => x.id);
+
+    const isleft = left !== "";
+    const compid = (isleft) ? left : right;
+    const complist = (isleft) ? publicflavors : privateflavors;
+    const component = complist.find(x => x.id === compid);
+
+    const equalleft = (isleft) ? [] : filterEqualMap(publicflavors, component);
+    const equalright = (isleft) ? filterEqualMap(privateflavors, component) : [];
+
+    return {
+        equalleft,
+        equalright
+    };
+}
+
 export const flavorSelectors = createSelector(
     publicPrivateSelector,
     selectSelector,
     ({filter, publicflavors, privateflavors}, select) => {
         const {left, right} = selectLeftRight(select, publicflavors, privateflavors);
+        const {equalleft, equalright} = otherEqual({left, right}, {publicflavors, privateflavors});
 
         return {
             filter,
             publicflavors,
             privateflavors,
             left,
-            right
+            right,
+            equalleft,
+            equalright
         };
     }
 );

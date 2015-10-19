@@ -155,10 +155,18 @@ class App extends Component {
         };
         const divStyleL = buildDivStyle("left");
         const divStyleR = buildDivStyle("right");
-        const {privateflavors, publicflavors, left, right, dispatch, filter} = this.props;
+        const {privateflavors,
+               publicflavors,
+               left,
+               right,
+               dispatch,
+               filter,
+               equalleft,
+               equalright} = this.props;
 
         return (<div>
                 <Header
+                canclear={left !== ""}
                 filter={filter}
                 onClearClick={() => dispatch(clearLR())}
                 onFilterClick={() => dispatch(toggleVisibility())}
@@ -169,6 +177,7 @@ class App extends Component {
                 <Label>Public Flavors</Label>
                 <FlavorList
                 activeid={left}
+                equallist={equalleft}
                 list={publicflavors}
                 onFlavorClick={this.handleFlavorClick(
                     setLeft,
@@ -186,6 +195,7 @@ class App extends Component {
                 <Label>Private Flavors</Label>
                 <FlavorList
                 activeid={right}
+                equallist={equalright}
                 list={privateflavors}
                 onFlavorClick={this.handleFlavorClick(
                     setRight,
@@ -201,12 +211,15 @@ class App extends Component {
                 </div>
 
                 </div>);
-        // <Button bsStyle="info" className="compareBtn" disabled={left === "" || right === ""} onMouseDown={ev => ev.preventDefault()}>Compare</Button>
+        // <Button bsStyle="info" className="compareBtn" disabled={left === "" || right === ""}
+        // onMouseDown={ev => ev.preventDefault()}>Compare</Button>
     }
 }
 
 App.propTypes = {
     dispatch: PropTypes.func.isRequired,
+    equalleft: PropTypes.array.isRequired,
+    equalright: PropTypes.array.isRequired,
     filter: PropTypes.bool.isRequired,
     left: PropTypes.string.isRequired,
     privateflavors: PropTypes.array.isRequired,

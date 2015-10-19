@@ -57,3 +57,13 @@ nav.collapse.in {
     left: 0;
     right: 0;
 }
+
+.itemequal > a {
+    color: white;
+    background-color: #ABABAB; /* #8BB8F1; */
+}
+
+.itemequal > a:hover {
+    color: white;
+    background-color: #787878 !important; /* #66A2ED !important; */
+}

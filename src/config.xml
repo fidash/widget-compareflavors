@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<widget xmlns="http://wirecloud.conwet.fi.upm.es/ns/macdescription/1" vendor="CoNWeT" name="flavour-comparator" version="0.1.0">
+<widget xmlns="http://wirecloud.conwet.fi.upm.es/ns/macdescription/1" vendor="CoNWeT" name="flavour-comparator" version="0.1.1">
   <details>
     <title>Flavour Comparator</title>
     <homepage>https://github.com/mgarcia/flavour-comparator</homepage>
