@@ -11,7 +11,7 @@
     <longdescription>DESCRIPTION.md</longdescription>
     <changelog>doc/changelog.md</changelog>
     <doc>doc/index.md</doc>
-    <license>MIT</license>
+    <license>Apache</license>
     <issuetracker>https://github.com/mgarcia/flavourcomparator/issues</issuetracker>
   </details>
 
@@ -27,5 +27,5 @@
     <outputendpoint name="compare" type="text" label="To compare" description="To compare" friendcode="flavor-compare"/>
   </wiring>
   <contents src="index.html" useplatformstyle="true"/>
-  <rendering height="26" width="10"/>
+  <rendering height="650px" width="33%"/>
 </widget>

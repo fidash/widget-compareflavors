@@ -1,3 +1,3 @@
-This widget allows you to [...]
+This widget allows you to compare flavors
 
 ## References

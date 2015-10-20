@@ -1,7 +1,7 @@
-NVD3 Charts widget
+Flavor Comparator widget
 ======================
 
-The NVD3 Charts widget is a WireCloud widget that provides ...
+The Flavor Comparator widget is a WireCloud widget that enables you to compare private with public flavors.
 
 Build
 -----
@@ -15,16 +15,10 @@ sudo apt-get install npm
 sudo npm install -g bower
 ```
 
-If you want the last version of the widget, you should change to the `develop` branch:
-
-```bash
-git checkout develop
-```
-
 Install other npm dependencies by running: (need root because some libraries use applications, check package.json before to be sure)
 
 ```bash
-sudo npm install
+npm install
 ```
 
 For build the widget you need download grunt:
@@ -39,7 +33,7 @@ And now, you can use grunt:
 grunt
 ```
 
-If everything goes well, you will find a wgt file in the `dist` folder.
+If everything goes well, you will find a wgt file in the `build` folder.
 
 ## Settings
 

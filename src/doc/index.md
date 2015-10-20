@@ -1,6 +1,6 @@
 ## Introduction
 
-This is the widget for building charts with nvd3
+This is the widget for compare flavors
 
 ## Settings
 

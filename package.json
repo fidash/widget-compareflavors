@@ -1,8 +1,8 @@
 {
     "name": "flavor-comparator",
-    "description": "This is the widget for building charts with nvd3",
+    "description": "This is the widget for compare flavors",
     "version": "0.1.1",
-    "homepage": "https://github.com/mgarcia/flavor-comparator",
+    "homepage": "https://github.com/fidash/widget-compareflavors",
     "author": {
         "name": "Miguel Garcia",
         "email": "mgarcia@conwet.com"
@@ -12,12 +12,12 @@
         "url": "git://github.com/mgarcia/flavor-comparator.git"
     },
     "bugs": {
-        "url": "https://github.com/mgarcia/flavor-comparator/issues"
+        "url": "https://github.com/fidash/widget-compareflavors/issues"
     },
     "licenses": [
         {
-            "type": "MIT",
-            "url": "https://github.com/mgarcia/flavor-comparator/blob/master/LICENSE-MIT"
+            "type": "apache",
+            "url": "https://github.com/fidash/widget-compareflavors/blob/master/LICENSE"
         }
     ],
     "scripts": {
