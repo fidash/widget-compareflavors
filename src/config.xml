@@ -1,27 +1,27 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<widget xmlns="http://wirecloud.conwet.fi.upm.es/ns/macdescription/1" vendor="CoNWeT" name="flavour-comparator" version="0.1.1">
+<widget xmlns="http://wirecloud.conwet.fi.upm.es/ns/macdescription/1" vendor="CoNWeT" name="flavour-comparator" version="0.6.0">
   <details>
     <title>Flavour Comparator</title>
-    <homepage>https://github.com/mgarcia/flavour-comparator</homepage>
+    <homepage>https://github.com/fidash/widget-compareflavors</homepage>
     <authors>Miguel Garcia</authors>
     <email>mgarcia@conwet.com</email>
     <image></image>
     <smartphoneimage></smartphoneimage>
-    <description>This is the widget for compare flavours</description>
+    <description>FIDASH widget to compare flavours</description>
     <longdescription>DESCRIPTION.md</longdescription>
     <changelog>doc/changelog.md</changelog>
     <doc>doc/index.md</doc>
     <license>Apache</license>
-    <issuetracker>https://github.com/mgarcia/flavourcomparator/issues</issuetracker>
+    <issuetracker>https://github.com/fidash/widget-compareflavors/issues</issuetracker>
   </details>
 
   <requirements>
   </requirements>
 
   <preferences>
-    <preference name="serverUrl" type="text" label="SLA Manager URL" description="URL of the SLA Manager server." default="http://private-anon-b695433ba-fiwareflavorsync.apiary-mock.com/"/>
-    <preference name="user" type="text" label="User" description="User for authenticating with the SLA Manager." default="user"/>
-    <preference name="password" type="password" label="Password" description="Password for authenticating with the SLA Manager." default="SysT3m4T0sSL4Us3r"/>
+    <preference name="serverUrl" type="text" label="Flavor Sync URL" description="URL of the Flavor Sync server." default="http://private-anon-b695433ba-fiwareflavorsync.apiary-mock.com/"/>
+    <preference name="user" type="text" label="User" description="User for authenticating with the Flavor Sync." default="user"/>
+    <preference name="password" type="password" label="Password" description="Password for authenticating with the Flavor Sync." default="SysT3m4T0sSL4Us3r"/>
   </preferences>
   <wiring>
     <outputendpoint name="compare" type="text" label="To compare" description="To compare" friendcode="flavor-compare"/>

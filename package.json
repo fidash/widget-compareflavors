@@ -1,7 +1,7 @@
 {
     "name": "flavor-comparator",
     "description": "This is the widget for compare flavors",
-    "version": "0.1.1",
+    "version": "0.6.0",
     "homepage": "https://github.com/fidash/widget-compareflavors",
     "author": {
         "name": "Miguel Garcia",
@@ -9,7 +9,7 @@
     },
     "repository": {
         "type": "git",
-        "url": "git://github.com/mgarcia/flavor-comparator.git"
+        "url": "git://github.com/fidash/widget-compareflavors.git"
     },
     "bugs": {
         "url": "https://github.com/fidash/widget-compareflavors/issues"
@@ -33,11 +33,8 @@
         "grunt-contrib-clean": "~0.6.0",
         "grunt-contrib-compress": "^0.11.0",
         "grunt-contrib-copy": "^0.8.0",
-        "grunt-jscs": "antonselukh/grunt-jscs.git",
-        "grunt-jshint-react": "^0.6.1",
         "grunt-karma": "^0.12.1",
         "grunt-shell": "^1.1.2",
-        "grunt-strip-code": "^0.1.2",
         "grunt-text-replace": "~0.4.0",
         "isparta": "^3.0.3",
         "istanbul": "gotwarlost/istanbul.git#source-map",
@@ -46,15 +43,11 @@
         "karma": "^0.13.10",
         "karma-babel-preprocessor": "^5.2.1",
         "karma-coverage": "douglasduteil/karma-coverage#next",
-        "karma-firefox-launcher": "^0.1.6",
-        "karma-fixture": "^0.2.5",
         "karma-jasmine": "^0.3.6",
         "karma-jasmine-jquery": "^0.1.1",
         "karma-webpack": "^1.7.0",
-        "karma-junit-reporter": "^0.3.7",
         "karma-nested-reporter": "~0.1",
         "karma-phantomjs-launcher": "^0.2.0",
-        "karma-sourcemap-loader": "^0.3.5",
         "mock-applicationmashup": "^0.1.3",
         "phantomjs": "^1.9.17",
         "eslint": "^1.6.0",

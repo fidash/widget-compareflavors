@@ -161,13 +161,13 @@ module.exports = function(grunt) {
     });
 
     grunt.loadNpmTasks('grunt-bower-task');
-    grunt.loadNpmTasks('grunt-eslint');
+    grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-compress');
     grunt.loadNpmTasks('grunt-contrib-copy');
-    grunt.loadNpmTasks('grunt-contrib-clean');
-    grunt.loadNpmTasks('grunt-text-replace');
-    grunt.loadNpmTasks('grunt-shell');
+    grunt.loadNpmTasks('grunt-eslint');
     grunt.loadNpmTasks('grunt-karma');
+    grunt.loadNpmTasks('grunt-shell');
+    grunt.loadNpmTasks('grunt-text-replace');
 
     grunt.registerTask('test', [
         'eslint',

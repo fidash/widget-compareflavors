@@ -1,7 +1,7 @@
 Flavor Comparator widget
 ======================
 
-The Flavor Comparator widget is a WireCloud widget that enables you to compare private with public flavors.
+The Flavor Comparator widget is a FIDASH widget that enables you to compare private with public flavors.
 
 Build
 -----
@@ -37,20 +37,22 @@ If everything goes well, you will find a wgt file in the `build` folder.
 
 ## Settings
 
-`Write here the preferences`
+- **Flavor Sync URL**: URL of the Flavor Sync server.
+- **User**: User for authenticating with the Flavor Sync server.
+- **Password**: User for authenticating with the Flavor Sync server.
 
 ## Wiring
 
 
 ### Input Endpoints
 
-`Write here the input wiring endpoints`
+`N/A`
 
 
 ### Output Endpoints
 
 
-`Write here the output wiring endpoints`
+- **compare**: Send the two flavors to compare when selected.
 
 ## Usage
 
@@ -62,3 +64,17 @@ If everything goes well, you will find a wgt file in the `build` folder.
 ## Copyright and License
 
 Copyright (c) 2015 CoNWeT
+
+This project is part of [FIWARE](https://www.fiware.org/). This widget is part of FI-Dash component included in FIWARE.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
