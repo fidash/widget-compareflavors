@@ -27,5 +27,5 @@
     <outputendpoint name="compare" type="text" label="To compare" description="To compare" friendcode="flavor-compare"/>
   </wiring>
   <contents src="index.html" useplatformstyle="true"/>
-  <rendering height="650px" width="33%"/>
+  <rendering height="460px" width="33%"/>
 </widget>

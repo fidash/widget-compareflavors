@@ -107,13 +107,17 @@ class App extends Component {
             ram: 1024,
             vcpus: 2
         }]).subscribe(data => {
+            // Divide in public/private and set it
+            const privateflavors = data.filter(f => !f.public);
+            const publicflavors = data.filter(f => f.public);
+
             // On OK just dispatch everything :)
             // this.props.dispatch(setFlavors(data.flavors));
-            this.props.dispatch(setFlavors(data));
+            this.props.dispatch(setFlavors(publicflavors, privateflavors));
             this.props.dispatch(clearLR());
         }, () => {
             // On error, clean everything!
-            this.props.dispatch(setFlavors([]));
+            this.props.dispatch(setFlavors([], []));
             this.props.dispatch(clearLR());
         });
     }

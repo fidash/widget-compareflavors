@@ -12,18 +12,17 @@ function flavorsEqual(f1, f2) {
             f1.vcpus === f2.vcpus);
 }
 
+const findOrEmpty = (def, list) =>
+      (typeof list.find(x => x.id === def) !== "undefined") ? def : "";
+
 function notInPriv(flav, priv) {
     const privsfilt = priv.filter(f => flavorsEqual(flav, f));
 
     return privsfilt.length === 0;
 }
 
-const findOrEmpty = (def, list) =>
-      (typeof list.find(x => x.id === def) !== "undefined") ? def : "";
-
-function selectPublicPrivate(flavors, filter) {
-    const privateflavors = flavors.filter(f => !f.public);
-    const publicflavors = flavors.filter(
+function selectPublicPrivate({privateflavors, publicflavors: allpublicflavors}, filter) {
+    const publicflavors = allpublicflavors.filter(
         f => f.public && (!filter || notInPriv(f, privateflavors))
     );
 

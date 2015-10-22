@@ -6,8 +6,16 @@ export function toggleVisibility() {
     return {type: types.TOGGLE_VISIBILITY};
 }
 
-export function setFlavors(flavors) {
-    return {type: types.SET_FLAVORS, flavors};
+export function setFlavors(publicflavors, privateflavors) {
+    return {type: types.SET_FLAVORS, publicflavors, privateflavors};
+}
+
+export function movePublic(from, to) {
+    return {type: types.MOVE_PUBLIC, from, to};
+}
+
+export function movePrivate(from, to) {
+    return {type: types.MOVE_PRIVATE, from, to};
 }
 
 export function setLeft(left) {
