@@ -8,19 +8,20 @@ const initialState = {
 };
 
 function move(from, to, list) {
+    if (from < 0 || from >= list.length || to < 0 || to >= list.length) {
+        return list;
+    }
     const elem = list[from];
+    const newlist = [...list.slice(0, from), ...list.slice(from + 1)];
 
-    return (typeof elem === "undefined") ? list :
-        [...list.slice(0, to),
-         elem,
-         ...list.slice(to)];
+    return [...newlist.slice(0, to), elem, ...newlist.slice(to)];
 }
 
 export default function flavors(state = initialState, action) {
     const {privateflavors, publicflavors} = state;
 
     switch (action.type) {
-    case SET_FLAVORS: // Reset Left&Right
+    case SET_FLAVORS:
         return {
             privateflavors: action.privateflavors,
             publicflavors: action.publicflavors

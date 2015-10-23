@@ -113,7 +113,8 @@ module.exports = function (config) {
 
     function normalizationBrowserName(extra) {
         return function (browser) {
-            return browser.toLowerCase().split(/[ /-]/)[0] + "/" + extra;
+            return extra;
+            // return browser.toLowerCase().split(/[ /-]/)[0] + "/" + extra;
         };
     }
 };
