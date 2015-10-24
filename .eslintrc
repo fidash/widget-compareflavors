@@ -118,8 +118,8 @@
             4
         ],
         "max-len": [
-            2,
-            140,
+            1,
+            240,
             4
         ],
         "max-nested-callbacks": [

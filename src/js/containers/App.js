@@ -132,9 +132,10 @@ class App extends Component {
             }
             this.props.dispatch(dispatchf(id)); // dispatch the original one!
 
-            if (this.props[othername] !== "") { // Send it!
-                const myobj = mylist.find(x => x.id === id);
+            // Send it!
+            if (this.props[othername] !== "") {
                 const otherobj = otherlist.find(x => x.id === this.props[othername]);
+                const myobj = mylist.find(x => x.id === id);
                 const tosend = {};
 
                 if (typeof myobj === "undefined" || typeof otherobj === "undefined") {
@@ -168,53 +169,35 @@ class App extends Component {
                equalleft,
                equalright} = this.props;
 
-        return (<div>
-                <Header
-                canclear={left !== ""}
-                filter={filter}
-                onClearClick={() => dispatch(clearLR())}
-                onFilterClick={() => dispatch(toggleVisibility())}
-                />
-                <div>
-
+        return (
+            <div>
+              <Header
+                  canclear={left !== ""}
+                  filter={filter}
+                  onClearClick={() => dispatch(clearLR())}
+                  onFilterClick={() => dispatch(toggleVisibility())}/>
+              <div>
                 <div style={divStyleL}>
-                <Label>Public Flavors</Label>
-                <FlavorList
-                activeid={left}
-                equallist={equalleft}
-                list={publicflavors}
-                onFlavorClick={this.handleFlavorClick(
-                    setLeft,
-                    {
-                        old: left,
-                        myname: "left",
-                        othername: "right",
-                        mylist: publicflavors,
-                        otherlist: privateflavors
-                    }
-                )}/>
+                  <Label>Public Flavors</Label>
+                  <FlavorList
+                      activeid={left}
+                      equallist={equalleft}
+                      list={publicflavors}
+                      onFlavorClick={this.handleFlavorClick(setLeft, {old: left, myname: "left", othername: "right", mylist: publicflavors, otherlist: privateflavors})}
+                  />
                 </div>
 
                 <div style={divStyleR}>
-                <Label>Private Flavors</Label>
-                <FlavorList
-                activeid={right}
-                equallist={equalright}
-                list={privateflavors}
-                onFlavorClick={this.handleFlavorClick(
-                    setRight,
-                    {
-                        old: right,
-                        myname: "right",
-                        othername: "left",
-                        mylist: privateflavors,
-                        otherlist: publicflavors
-                    }
-                )}/>
+                  <Label>Private Flavors</Label>
+                  <FlavorList
+                      activeid={right}
+                      equallist={equalright}
+                      list={privateflavors}
+                      onFlavorClick={this.handleFlavorClick(setRight, {old: right, myname: "right", othername: "left", mylist: privateflavors, otherlist: publicflavors})}
+                  />
                 </div>
-                </div>
-
-                </div>);
+              </div>
+            </div>);
         // <Button bsStyle="info" className="compareBtn" disabled={left === "" || right === ""}
         // onMouseDown={ev => ev.preventDefault()}>Compare</Button>
     }
