@@ -36,13 +36,20 @@ module.exports = function(config) {
         );
     }
 
+    // var preloaders = (config.dev) ? [] : [{
+    //     test: /\.js$/,
+    //     loader: "source-map-loader"
+    // }];
+
+    var devtool = (config.dev) ? "" : "cheap-module-source-map";
+
     var loaders = (config.dev) ? [{
         test: /\.js$/,
         loaders: ['react-hot', 'babel'],
         include: path.join(__dirname, 'src')
     }] : [{
         test: /\.js$/,
-        loaders: ["babel"],
+        loaders: ["babel?stage=1"],
         include: path.join(__dirname, 'src/js')
     }];
 
@@ -50,6 +57,7 @@ module.exports = function(config) {
         entry: entry,
         output: output,
         target: target,
+        devtool: devtool,
         plugins: plugins,
         module: {
             loaders: loaders

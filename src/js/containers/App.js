@@ -27,28 +27,28 @@ class App extends Component {
         };
     }
 
-    buildRequest(preferences, url, method, postBody) {
-        let baseURL = preferences.serverUrl;
+    // buildRequest(preferences, url, method, postBody) {
+    //     let baseURL = preferences.serverUrl;
 
-        if (baseURL[baseURL.length - 1] !== "/") {
-            baseURL += "/";
-        }
-        baseURL += url;
+    //     if (baseURL[baseURL.length - 1] !== "/") {
+    //         baseURL += "/";
+    //     }
+    //     baseURL += url;
 
-        const options = {
-            method: method,
-            requestHeaders: {
-                user: preferences.user,
-                password: preferences.password,
-                Accept: "application/json"
-            }
-        };
+    //     const options = {
+    //         method: method,
+    //         requestHeaders: {
+    //             user: preferences.user,
+    //             password: preferences.password,
+    //             Accept: "application/json"
+    //         }
+    //     };
 
-        if (postBody) {
-            options.postBody = postBody;
-        }
-        return {url: baseURL, options: options};
-    }
+    //     if (postBody) {
+    //         options.postBody = postBody;
+    //     }
+    //     return {url: baseURL, options: options};
+    // }
 
     makeRequest(preferences, url, method, postBody) {
         let baseURL = preferences.serverUrl;
@@ -91,35 +91,38 @@ class App extends Component {
 
         sub.map(response => {
             return JSON.parse(response.response);
-        }).map(data => [...data.flavors, {
-            // this map will be removed, this is to test things :)
-            disk: 3,
-            public: true,
-            name: "Should Be Removed",
-            id: "random",
-            ram: 512,
-            vcpus: 2
-        }, {
-            disk: 1,
-            public: false,
-            name: "To check",
-            id: "random2",
-            ram: 1024,
-            vcpus: 2
-        }]).subscribe(data => {
-            // Divide in public/private and set it
-            const privateflavors = data.filter(f => !f.public);
-            const publicflavors = data.filter(f => f.public);
+        }).map(data => data.flavors)
+            // .map(
+            //     data => [...data.flavors, {
+            //         // this map will be removed, this is to test things :)
+            //         disk: 3,
+            //         public: true,
+            //         name: "Should Be Removed",
+            //         id: "random",
+            //         ram: 512,
+            //         vcpus: 2
+            //     }, {
+            //         disk: 1,
+            //         public: false,
+            //         name: "To check",
+            //         id: "random2",
+            //         ram: 1024,
+            //         vcpus: 2
+            //     }])
+            .subscribe(data => {
+                // Divide in public/private and set it
+                const privateflavors = data.filter(f => !f.public);
+                const publicflavors = data.filter(f => f.public);
 
-            // On OK just dispatch everything :)
-            // this.props.dispatch(setFlavors(data.flavors));
-            this.props.dispatch(setFlavors(publicflavors, privateflavors));
-            this.props.dispatch(clearLR());
-        }, () => {
-            // On error, clean everything!
-            this.props.dispatch(setFlavors([], []));
-            this.props.dispatch(clearLR());
-        });
+                // On OK just dispatch everything :)
+                // this.props.dispatch(setFlavors(data.flavors));
+                this.props.dispatch(setFlavors(publicflavors, privateflavors));
+                this.props.dispatch(clearLR());
+            }, () => {
+                // On error, clean everything!
+                this.props.dispatch(setFlavors([], []));
+                this.props.dispatch(clearLR());
+            });
     }
 
     handleFlavorClick(dispatchf, data) {

@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<widget xmlns="http://wirecloud.conwet.fi.upm.es/ns/macdescription/1" vendor="CoNWeT" name="flavour-comparator" version="0.6.0">
+<widget xmlns="http://wirecloud.conwet.fi.upm.es/ns/macdescription/1" vendor="UPM-ETSIINF" name="compareflavors-widget" version="0.6.0">
   <details>
-    <title>Flavour Comparator</title>
+    <title>Compare Flavors</title>
     <homepage>https://github.com/fidash/widget-compareflavors</homepage>
     <authors>Miguel Garcia</authors>
     <email>mgarcia@conwet.com</email>
