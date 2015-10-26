@@ -68,7 +68,7 @@ module.exports = function (config) {
 
         // https://github.com/usrz/javascript-karma-verbose-reporter ??
         // https://github.com/mlex/karma-spec-reporter ??
-        reporters: ["coverage", "nested"],
+        reporters: ["nested", "junit", "coverage"],
         colors: true,
 
         nestedReporter: {
@@ -83,6 +83,10 @@ module.exports = function (config) {
             }
         },
 
+        junitReporter: {
+            outputDir: 'build/test-reports'
+        },
+
         coverageReporter: {
             instrumenters: {isparta: require("isparta")},
             instrumenter: {
@@ -90,9 +94,6 @@ module.exports = function (config) {
             },
 
             reporters: [
-                {
-                    type: "text-summary"
-                },
                 {
                     type: "cobertura",
                     dir: "build/coverage",
@@ -107,7 +108,10 @@ module.exports = function (config) {
                     type: "html",
                     dir: "build/coverage/",
                     subdir: normalizationBrowserName("html")
-                }
+                },
+                {
+                    type: "text-summary"
+                },
             ]
         }
     });

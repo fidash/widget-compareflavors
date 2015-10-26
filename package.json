@@ -52,6 +52,7 @@
     "karma-coverage": "douglasduteil/karma-coverage#next",
     "karma-jasmine": "^0.3.6",
     "karma-jasmine-jquery": "^0.1.1",
+    "karma-junit-reporter": "^0.3.8",
     "karma-nested-reporter": "~0.1",
     "karma-phantomjs-launcher": "^0.2.0",
     "karma-webpack": "^1.7.0",
