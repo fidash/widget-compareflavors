@@ -152,10 +152,10 @@ module.exports = function(grunt) {
 
         shell: {
             webpackproduction: {
-                command: './node_modules/webpack/bin/webpack.js --config webpack-production.config.js --progress --profile --colors'
+                command: './node_modules/.bin/webpack --config webpack-production.config.js --progress --profile --colors'
             },
             webpacktest: {
-                command: './node_modules/webpack/bin/webpack.js --config webpack-production-no-minimize.config.js --progress --profile --colors --devtool "#cheap-module-eval-source-map"'
+                command: './node_modules/.bin/webpack --config webpack-production-no-minimize.config.js --progress --profile --colors --devtool "#cheap-module-eval-source-map"'
             }
         }
     });
