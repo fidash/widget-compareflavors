@@ -152,6 +152,7 @@ describe("Flavor component", () => {
         expect(instance.props.children.length).toEqual(8);
 
         let index;
+
         for (index; index < props.list.length; index++) {
             const elem = instance.props.children[index];
             const haveit = props.equallist.indexOf(elem.id) > -1;
