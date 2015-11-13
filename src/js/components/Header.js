@@ -8,10 +8,10 @@ const Header = props => {
     const {canclear, filter, onFilterClick, onClearClick} = props;
 
     return (
-        <ButtonToolbar className="text-center myheader">
-          <Button bsStyle={(filter) ? "danger" : "success"} onClick={onFilterClick} onMouseDown={ev => ev.preventDefault()}>
-            {(filter) ? "Quit filter" : "Enable filter"}</Button>
-          <Button bsStyle="info" disabled={!canclear} onClick={onClearClick} onMouseDown={ev => ev.preventDefault()}>Clear</Button>
+            <ButtonToolbar className="text-right myheader">
+            <Button bsStyle={(filter) ? "danger" : "success"} onClick={onFilterClick} onMouseDown={ev => ev.preventDefault()}>
+            {(filter) ? "Show equals" : "Hide equals"}</Button>
+            <Button bsStyle="info" disabled={!canclear} onClick={onClearClick} onMouseDown={ev => ev.preventDefault()}><img className="imgicon" src="images/delete31.png"/></Button>
         </ButtonToolbar>
     );
 };

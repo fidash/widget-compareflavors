@@ -58,7 +58,7 @@ describe("Header component", () => {
             onFilterClick: jasmine.createSpy("onFilter")
         };
 
-        auxBtns(props, "success", "Enable filter", true);
+        auxBtns(props, "success", "Hide equals", true);
     });
 
     it("clear, no filter", () => {
@@ -69,7 +69,7 @@ describe("Header component", () => {
             onFilterClick: jasmine.createSpy("onFilter")
         };
 
-        auxBtns(props, "success", "Enable filter", false);
+        auxBtns(props, "success", "Hide equals", false);
     });
 
     it("no clear, filter", () => {
@@ -80,7 +80,7 @@ describe("Header component", () => {
             onFilterClick: jasmine.createSpy("onFilter")
         };
 
-        auxBtns(props, "danger", "Quit filter", true);
+        auxBtns(props, "danger", "Show equals", true);
     });
 
     it("clear, filter", () => {
@@ -91,6 +91,6 @@ describe("Header component", () => {
             onFilterClick: jasmine.createSpy("onFilter")
         };
 
-        auxBtns(props, "danger", "Quit filter", false);
+        auxBtns(props, "danger", "Show equals", false);
     });
 });

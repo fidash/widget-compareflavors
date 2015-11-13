@@ -1,10 +1,11 @@
 "use strict";
 
-import {SET_CHOOSE_LEFT, SET_CHOOSE_RIGHT, CLEAR_LR} from "../constants/ActionTypes";
+import {SET_CHOOSE_LEFT, SET_CHOOSE_RIGHT, SET_REGION, CLEAR_LR} from "../constants/ActionTypes";
 
 const initialState = {
     left: "",
-    right: ""
+    right: "",
+    region: ""
 };
 
 export default function select(state = initialState, action) {
@@ -12,17 +13,26 @@ export default function select(state = initialState, action) {
     case SET_CHOOSE_LEFT:
         return {
             left: action.left,
-            right: state.right
+            right: state.right,
+            region: state.region
         };
     case SET_CHOOSE_RIGHT:
         return {
             left: state.left,
-            right: action.right
+            right: action.right,
+            region: state.region
         };
     case CLEAR_LR:
         return {
             left: "",
-            right: ""
+            right: "",
+            region: state.region
+        };
+    case SET_REGION:
+        return {
+            left: state.left,
+            right: state.right,
+            region: action.region
         };
     default:
         return state;

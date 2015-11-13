@@ -19,11 +19,18 @@ module.exports = function (config) {
             "node_modules/babel-core/browser-polyfill.js",
             "node_modules/rx/dist/rx.all.min.js",
             "node_modules/mock-applicationmashup/lib/vendor/mockMashupPlatform.js",
-            "src/test/js/*.spec.js"
+            "src/test/js/*.spec.js",
+            {
+                pattern: "src/images/**/*",
+                watched: true,
+                included: false,
+                served: true
+            }
         ],
 
         proxies: {
-            "/base": "/base/src"
+            "/base": "/base/src",
+            "/images": "/base/src/images"
         },
 
         browsers: ["PhantomJS"],

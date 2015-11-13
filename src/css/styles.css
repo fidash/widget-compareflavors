@@ -36,6 +36,9 @@ nav.collapse.in {
 
 .btn-toolbar > .btn {
     float: none;
+    font-size: 11px;
+    padding: 2px 3px;
+    border: medium none;
 }
 
 .myheader {
@@ -66,4 +69,63 @@ nav.collapse.in {
 .itemequal > a:hover {
     color: white;
     background-color: #787878 !important; /* #66A2ED !important; */
+}
+
+.imgicon {
+    height: 15px;
+    width: 15px;
+}
+
+.nav > li > a {
+    padding: 8px 15px;
+}
+
+.Dropdown {
+    position: relative;
+}
+
+.placeholder {
+    display: inline;
+    padding: 0.2em 0.6em 0.3em;
+    font-size: 75%;
+    font-weight: 700;
+    line-height: 1;
+    color: #FFF;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: 0.25em;
+    background-color: #777;
+}
+
+.placeholder:hover {
+    cursor: pointer;
+}
+
+.Dropdown-menu {
+    position: absolute;
+    top: 21px;
+    left: 5%;
+    width: 90%;
+    height: 100%;
+    z-index: 10;
+}
+
+.Dropdown-option {
+    display: block;
+    margin-top: 3px;
+    padding: 0.2em 0.6em 0.3em;
+    font-size: 75%;
+    font-weight: 700;
+    line-height: 1;
+    color: #FFF;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: 0.25em;
+    background-color: #777;
+}
+
+.Dropdown-option:hover {
+    cursor: pointer;
 }

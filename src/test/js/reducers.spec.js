@@ -4,7 +4,7 @@ import hider from "../../js/reducers/hider";
 import select from "../../js/reducers/select";
 import flavors from "../../js/reducers/flavors";
 import rootReducer from "../../js/reducers/index";
-import {toggleVisibility, setLeft, setRight, clearLR, setFlavors, movePublic, movePrivate} from "../../js/actions";
+import {toggleVisibility, setLeft, setRight, setRegion, clearLR, setFlavors, movePublic, movePrivate} from "../../js/actions";
 import nactions from "./nactions";
 
 describe("hider reducer", () => {
@@ -30,7 +30,8 @@ describe("select reducer", () => {
     it("initial state is correct", () => {
         expect(nactions(select)).toEqual({
             left: "",
-            right: ""
+            right: "",
+            region: ""
         });
     });
 
@@ -43,7 +44,8 @@ describe("select reducer", () => {
 
         expect(nactions(select, [setLeft(left)])).toEqual({
             left,
-            right: ""
+            right: "",
+            region: ""
         });
     });
 
@@ -52,7 +54,8 @@ describe("select reducer", () => {
 
         expect(nactions(select, [setRight(right)])).toEqual({
             right,
-            left: ""
+            left: "",
+            region: ""
         });
     });
 
@@ -61,17 +64,19 @@ describe("select reducer", () => {
 
         expect(nactions(select, [setRight(right), setLeft(left)])).toEqual({
             left,
-            right
+            right,
+            region: ""
         });
 
         expect(nactions(select, [setLeft(left), setRight(right)])).toEqual({
             left,
-            right
+            right,
+            region: ""
         });
     });
 
     it("clearLR", () => {
-        const left = "LV", right = "RV", empty = {left: "", right: ""};
+        const left = "LV", right = "RV", empty = {left: "", right: "", region: ""};
 
         expect(nactions(select, [setLeft(left), clearLR()])).toEqual(empty);
         expect(nactions(select, [setRight(right), clearLR()])).toEqual(empty);
@@ -199,7 +204,7 @@ describe("flavors reducer", () => {
 
 
 describe("root reducer", () => {
-    const filter = false, flavorsdef = {publicflavors: [], privateflavors: []}, selectdef = {left: "", right: ""};
+    const filter = false, flavorsdef = {publicflavors: [], privateflavors: []}, selectdef = {left: "", right: "", region: ""};
 
     it("default value is correct", () => {
         expect(nactions(rootReducer)).toEqual({
@@ -229,7 +234,8 @@ describe("root reducer", () => {
             flavors: flavorsdef,
             select: {
                 left,
-                right
+                right,
+                region: ""
             }
         });
     });
@@ -247,6 +253,21 @@ describe("root reducer", () => {
         });
     });
 
+    it("set region", () => {
+        const left = "", right = "", region = "myregion";
+
+        expect(nactions(rootReducer, [setRegion(region)])).toEqual({
+            filter,
+            flavors: flavorsdef,
+            select: {
+                left,
+                right,
+                region: region
+            }
+        });
+    });
+
+
     it("All", () => {
         const left = "LEFTV", right = "RIGHTV";
         const publicflavors = [1, 2], privateflavors = [3, 4];
@@ -262,15 +283,14 @@ describe("root reducer", () => {
             filter: true,
             select: {
                 left,
-                right
+                right,
+                region: ""
             },
             flavors: {
                 publicflavors,
                 privateflavors
             }
         });
-
-
     });
 
 });

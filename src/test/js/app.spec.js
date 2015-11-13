@@ -27,7 +27,7 @@ function setup(store) {
 
 describe("App container", () => {
     let store;
-    const expectstate = (filter, publicflavors, privateflavors, left, right) => {
+    const expectstate = (filter, publicflavors, privateflavors, left, right, region) => { // eslint-disable-line max-params
         expect(store.getState()).toEqual({
             filter,
             flavors: {
@@ -36,12 +36,13 @@ describe("App container", () => {
             },
             select: {
                 left,
-                right
+                right,
+                region
             }
         });
     };
     const initialvalue = () => {
-        expectstate(false, [], [], "", "");
+        expectstate(false, [], [], "", "", "");
     };
 
     beforeAll(() => {
@@ -67,20 +68,23 @@ describe("App container", () => {
             id: "123",
             disk: 3,
             ram: 2,
-            vcpus: 1
+            vcpus: 1,
+            nodes: ["region"]
         }, {
             public: true,
             id: "345",
             disk: 4,
             ram: 5,
-            vcpus: 8
+            vcpus: 8,
+            nodes: ["region"]
         }];
         const privateflavors = [{
             public: false,
             id: "285",
             disk: 3,
             ram: 2,
-            vcpus: 1
+            vcpus: 1,
+            nodes: ["region"]
         }];
 
         store.dispatch(setFlavors(publicflavors, privateflavors));
@@ -106,7 +110,8 @@ describe("App container", () => {
             name: "TEST",
             id: "noid",
             ram: 512,
-            vcpus: 2
+            vcpus: 2,
+            nodes: ["region"]
         }];
         const privateflavors = [{
             disk: 1,
@@ -114,7 +119,8 @@ describe("App container", () => {
             name: "TESTE",
             id: "idr",
             ram: 1024,
-            vcpus: 8
+            vcpus: 8,
+            nodes: ["region"]
         }];
         const responsedata = {
             flavors: [...publicflavors, ...privateflavors]
@@ -134,7 +140,7 @@ describe("App container", () => {
             const lis = TestUtils.scryRenderedDOMComponentsWithTag(app, "li");
 
             expect(lis.length).toEqual(2);
-            expectstate(false, publicflavors, privateflavors, "", "");
+            expectstate(false, publicflavors, privateflavors, "", "", "");
             done();
         }, 0);
     });
@@ -146,7 +152,8 @@ describe("App container", () => {
             name: "TEST",
             id: "noid",
             ram: 512,
-            vcpus: 2
+            vcpus: 2,
+            nodes: ["region"]
         }];
         const privateflavors = [{
             disk: 1,
@@ -154,7 +161,8 @@ describe("App container", () => {
             name: "TESTE",
             id: "idr",
             ram: 1024,
-            vcpus: 8
+            vcpus: 8,
+            nodes: ["region"]
         }];
         const responsedata = {
             flavors: [...publicflavors, ...privateflavors]
@@ -171,7 +179,7 @@ describe("App container", () => {
         const {app, instance} = setup(store);
 
         setTimeout(() => {
-            expectstate(false, publicflavors, privateflavors, "", "");
+            expectstate(false, publicflavors, privateflavors, "", "", "");
 
             const leftc = app.handleFlavorClick(setLeft, {
                 old: "",
@@ -191,24 +199,18 @@ describe("App container", () => {
             leftc("noid");
             rightc("idr");
 
-            expectstate(false, publicflavors, privateflavors, "noid", "idr");
+            expectstate(false, publicflavors, privateflavors, "noid", "idr", "");
 
             expect(window.MashupPlatform.wiring.pushEvent).toHaveBeenCalledWith("compare", JSON.stringify({
-                right: {
-                    disk: 1,
-                    public: false,
-                    name: "TESTE",
-                    id: "idr",
-                    ram: 1024,
-                    vcpus: 8
-                },
-                left: {
-                    disk: 2,
-                    public: true,
-                    name: "TEST",
-                    id: "noid",
+                to: {
+                    vcpus: 2,
                     ram: 512,
-                    vcpus: 2
+                    disk: 2
+                },
+                from: {
+                    vcpus: 8,
+                    ram: 1024,
+                    disk: 1
                 }
             }));
 

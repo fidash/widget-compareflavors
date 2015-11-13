@@ -26,6 +26,10 @@ export function setRight(right) {
     return {type: types.SET_CHOOSE_RIGHT, right};
 }
 
+export function setRegion(region) {
+    return {type: types.SET_REGION, region};
+}
+
 export function clearLR() {
     return {type: types.CLEAR_LR};
 }

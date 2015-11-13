@@ -5,7 +5,7 @@ import {toggleVisibility} from "../../js/actions/index";
 
 describe("Store", () => {
     let store;
-    const expectstate = (filter, publicflavors, privateflavors, left, right) => {
+    const expectstate = (filter, publicflavors, privateflavors, left, right, region) => { // eslint-disable-line max-params
         expect(store.getState()).toEqual({
             filter,
             flavors: {
@@ -14,12 +14,13 @@ describe("Store", () => {
             },
             select: {
                 left,
-                right
+                right,
+                region
             }
         });
     };
     const initialvalue = () => {
-        expectstate(false, [], [], "", "");
+        expectstate(false, [], [], "", "", "");
     };
 
     beforeEach(() => {
@@ -34,6 +35,6 @@ describe("Store", () => {
         initialvalue();
         store.dispatch(toggleVisibility());
 
-        expectstate(true, [], [], "", "");
+        expectstate(true, [], [], "", "", "");
     });
 });

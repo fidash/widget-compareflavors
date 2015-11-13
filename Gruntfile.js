@@ -185,12 +185,6 @@ module.exports = function(grunt) {
         'compress:widget'
     ]);
 
-    grunt.registerTask('default', [
-        'bower:install',
-        'test',
-        'build'
-    ]);
-
     grunt.registerTask('buildminify', [
         'clean:temp',
         'webpack',
@@ -199,7 +193,15 @@ module.exports = function(grunt) {
         'compress:widget'
     ]);
 
-    grunt.registerTask('publish', [
+    grunt.registerTask('default', [
+        'bower:install',
+        'test',
         'buildminify'
+    ]);
+
+    grunt.registerTask('fast', [
+        'bower:install',
+        'test',
+        'build'
     ]);
 };

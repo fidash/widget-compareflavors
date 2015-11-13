@@ -6,7 +6,8 @@ import {connect} from "react-redux";
 import {Label} from "react-bootstrap";
 import FlavorList from "../components/FlavorList";
 import Header from "../components/Header";
-import {toggleVisibility, setFlavors, setLeft, setRight, clearLR} from "../actions/index";
+import Selector from "../components/Selector";
+import {toggleVisibility, setFlavors, setLeft, setRight, clearLR, setRegion} from "../actions/index";
 import {flavorSelectors} from "../selectors/flavorSelectors";
 
 class App extends Component {
@@ -127,6 +128,7 @@ class App extends Component {
 
     handleFlavorClick(dispatchf, data) {
         const {old, myname, othername, mylist, otherlist} = data;
+        const filterflav = ({vcpus, ram, disk}) => ({vcpus, ram, disk});
 
         return function handler(id) {
             if (id === old) {
@@ -139,15 +141,25 @@ class App extends Component {
             if (this.props[othername] !== "") {
                 const otherobj = otherlist.find(x => x.id === this.props[othername]);
                 const myobj = mylist.find(x => x.id === id);
-                const tosend = {};
+                let tosend = {};
 
                 if (typeof myobj === "undefined" || typeof otherobj === "undefined") {
                     window.console.error("Not find?");
                     return;
                 }
 
-                tosend[myname] = myobj;
-                tosend[othername] = otherobj;
+                if (myname === "left") {
+                    tosend = {
+                        to: filterflav(myobj),
+                        from: filterflav(otherobj)
+                    };
+                } else {
+                    tosend = {
+                        to: filterflav(otherobj),
+                        from: filterflav(myobj)
+                    };
+                }
+
                 this.MashupPlatform.wiring.pushEvent("compare", JSON.stringify(tosend));
             }
         }.bind(this);
@@ -168,6 +180,8 @@ class App extends Component {
                left,
                right,
                dispatch,
+               region,
+               regions,
                filter,
                equalleft,
                equalright} = this.props;
@@ -191,7 +205,7 @@ class App extends Component {
                 </div>
 
                 <div style={divStyleR}>
-                  <Label>Private Flavors</Label>
+                <Selector onChange={o => dispatch(setRegion(o.value))} options={regions} selected={region}/>
                   <FlavorList
                       activeid={right}
                       equallist={equalright}
@@ -200,7 +214,7 @@ class App extends Component {
                   />
                 </div>
               </div>
-            </div>);
+                </div>);
         // <Button bsStyle="info" className="compareBtn" disabled={left === "" || right === ""}
         // onMouseDown={ev => ev.preventDefault()}>Compare</Button>
     }
@@ -214,6 +228,8 @@ App.propTypes = {
     left: PropTypes.string.isRequired,
     privateflavors: PropTypes.array.isRequired,
     publicflavors: PropTypes.array.isRequired,
+    region: PropTypes.string.isRequired,
+    regions: PropTypes.array.isRequired,
     right: PropTypes.string.isRequired
 };
 

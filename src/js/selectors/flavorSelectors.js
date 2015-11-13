@@ -40,16 +40,6 @@ const flavorsSelector = state => state.flavors;
 const filterSelector = state => state.filter;
 const selectSelector = state => state.select;
 
-const publicPrivateSelector = createSelector(
-    flavorsSelector,
-    filterSelector,
-    (flavors, filter) => {
-        const {publicflavors, privateflavors} = selectPublicPrivate(flavors, filter);
-
-        return {filter, publicflavors, privateflavors};
-    }
-);
-
 function otherEqual({left, right}, {publicflavors, privateflavors}) {
     if ((left === "" && right === "") || (left !== "" && right !== "")) {
         return {
@@ -76,20 +66,38 @@ function otherEqual({left, right}, {publicflavors, privateflavors}) {
 }
 
 export const flavorSelectors = createSelector(
-    publicPrivateSelector,
+    flavorsSelector,
+    filterSelector,
     selectSelector,
-    ({filter, publicflavors, privateflavors}, select) => {
+    (flavors, filter, select) => {
+        const {publicflavors: originalpublic, privateflavors: originalprivate} = flavors;
+        const {region} = select;
+        const regions = new Set(originalprivate.map(x => x.nodes).reduce((acc, x) => [...acc, ...x], []));
+        const inRegion = (flavor, r) => new Set(flavor.nodes).has(r);
+        const defaultregion = (regions.size === 0) ? "" : [...regions][0];
+        const regionselected = (regions.has(region) ? region : defaultregion);
+        const newprivateflavors = originalprivate.filter(f => inRegion(f, regionselected));
+
+        const {publicflavors, privateflavors} = selectPublicPrivate({
+            publicflavors: originalpublic,
+            privateflavors: newprivateflavors
+        }, filter);
+        // const {filter, publicflavors} = publicprivate;
+        // const oldprivateflavors = publicprivate.privateflavors;
+
         const {left, right} = selectLeftRight(select, publicflavors, privateflavors);
         const {equalleft, equalright} = otherEqual({left, right}, {publicflavors, privateflavors});
 
         return {
-            filter,
-            publicflavors,
-            privateflavors,
-            left,
-            right,
             equalleft,
-            equalright
+            equalright,
+            filter,
+            left,
+            privateflavors,
+            publicflavors,
+            region: regionselected,
+            regions: [...regions],
+            right
         };
     }
 );
