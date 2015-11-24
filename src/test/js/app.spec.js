@@ -205,12 +205,14 @@ describe("App container", () => {
                 to: {
                     vcpus: 2,
                     ram: 512,
-                    disk: 2
+                    disk: 2,
+                    name: "TEST"
                 },
                 from: {
                     vcpus: 8,
                     ram: 1024,
-                    disk: 1
+                    disk: 1,
+                    name: "TESTE"
                 }
             }));
 

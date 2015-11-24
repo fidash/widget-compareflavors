@@ -128,7 +128,7 @@ class App extends Component {
 
     handleFlavorClick(dispatchf, data) {
         const {old, myname, othername, mylist, otherlist} = data;
-        const filterflav = ({vcpus, ram, disk}) => ({vcpus, ram, disk});
+        const filterflav = ({vcpus, ram, disk, name}) => ({vcpus, ram, disk, name});
 
         return function handler(id) {
             if (id === old) {
