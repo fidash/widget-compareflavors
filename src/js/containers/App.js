@@ -11,9 +11,12 @@ import {toggleVisibility, setFlavors, setLeft, setRight, clearLR, setRegion} fro
 import {flavorSelectors} from "../selectors/flavorSelectors";
 
 class App extends Component {
+
     constructor(props) {
         super(props);
         this.MashupPlatform = window.MashupPlatform;
+        this.getOpenStackToken(this.getProjects);
+        this.getAdminRegions();
         this.askflavors(this.getpreferences());
         this.MashupPlatform.prefs.registerCallback(() => {
             this.askflavors(this.getpreferences());
@@ -28,28 +31,135 @@ class App extends Component {
         };
     }
 
-    // buildRequest(preferences, url, method, postBody) {
-    //     let baseURL = preferences.serverUrl;
+    isAdmin(roles) {
+        let found = false;
+        for (var i=0; i<roles.length && !found; i++) {
+            if (role.name === "InfrastructureOwner") {
+                found = true;
+            }
+        }
+        return found;
+    }
 
-    //     if (baseURL[baseURL.length - 1] !== "/") {
-    //         baseURL += "/";
-    //     }
-    //     baseURL += url;
+    getAdminRegions() {
 
-    //     const options = {
-    //         method: method,
-    //         requestHeaders: {
-    //             user: preferences.user,
-    //             password: preferences.password,
-    //             Accept: "application/json"
-    //         }
-    //     };
+        let options = {
+            method: "GET",
+            requestHeaders: {
+                "X-FI-WARE-OAuth-Token": "true",
+                "x-fi-ware-oauth-get-parameter": "access_token",
+                "Accept": "application/json"
+            },
+            onSuccess: function (response) {
 
-    //     if (postBody) {
-    //         options.postBody = postBody;
-    //     }
-    //     return {url: baseURL, options: options};
-    // }
+                let responseBody = JSON.parse(response.responseText);
+                this.adminRegions = [];
+
+                responseBody.organizations.forEach(function (organization) {
+                    if (isAdmin(organization.roles)) {
+                        this.adminRegions.push(organization.name.replace(" FIDASH", ""));
+                    }
+                });
+            }.bind(this),
+            onFailure: function (error) {
+                console.log("Failed to get the admin regions");
+            }
+        };
+        
+        MashupPlatform.http.makeRequest(App.IDM_URL + "/user", options);
+    }
+
+    getOpenStackToken(success, projectId) {
+
+        let postBody = {
+            "auth": {
+                "identity": {
+                    "methods": [
+                        "oauth2"
+                    ],
+                    "oauth2": {
+                        "access_token_id": "%fiware_token%"
+                    }
+                }
+            }
+        };
+
+        // Add scope if any
+        if (projectId) {
+            postBody.auth.scope = {
+                "project":{  
+                    "id": projectId
+                 }
+            };
+        }
+        
+        let options = {
+            method: "POST",
+            requestHeaders: {
+                "X-FI-WARE-OAuth-Token": "true",
+                "X-FI-WARE-OAuth-Token-Body-Pattern": "%fiware_token%",
+                "Accept": "application/json"
+            },
+            contentType: "application/json",
+            postBody: JSON.stringify(postBody),
+            onSuccess: success.bind(this),
+            onFailure: function (error) {
+                console.log("Failed to get OpenStack token");
+            }
+        };
+
+        MashupPlatform.http.makeRequest(App.KEYSTONE_URL + "/auth/tokens", options);
+    }
+
+    getProjects(response) {
+        this.generalToken = response.getHeader('x-subject-token');
+        let username = MashupPlatform.context.get('username');
+        let options = {
+            method: "GET",
+            requestHeaders: {
+                "X-Auth-Token": this.generalToken,
+                "Accept": "application/json"
+            },
+            onSuccess: function (response) {
+                let responseBody = JSON.parse(response.responseText);
+                responseBody.role_assignments.forEach(function (role) {
+                    let project = role.scope.project.id;
+                    this.getProjectPermissions(project);
+                }.bind(this));
+            }.bind(this),
+            onFailure: function (error) {
+                console.log("Failed to get projects");
+            }
+        };
+
+        MashupPlatform.http.makeRequest(App.KEYSTONE_URL + "/role_assignments?user.id=" + username, options);
+    }
+
+    getProjectPermissions(project) {
+        let options = {
+            method: "GET",
+            requestHeaders: {
+                "X-Auth-Token": this.generalToken,
+                "Accept": "application/json"
+            },
+            onSuccess: function (response) {
+                let responseBody = JSON.parse(response.responseText);
+                if (responseBody.project.is_cloud_project) {
+                    this.getOpenStackToken(function (response) {
+
+                        // For now we only have one cloud project per user so we don't
+                        // control the case of several cloud projects.
+                        this.scopeToken = tokenResponse.getHeader('x-subject-token');
+                    }, project);
+                }
+            }.bind(this),
+            onFailure: function (error) {
+                console.log("Failed to get project permissions fo project " + project + ".");
+            }
+        };
+
+        MashupPlatform.http.makeRequest(App.KEYSTONE_URL + "/projects/" + project, options);
+    }
 
     makeRequest(preferences, url, method, postBody) {
         let baseURL = preferences.serverUrl;
@@ -220,6 +330,8 @@ class App extends Component {
     }
 }
 
+App.KEYSTONE_URL = "https://cloud.lab.fiware.org/keystone/v3";
+App.IDM_URL = "https://account.lab.fiware.org";
 App.propTypes = {
     dispatch: PropTypes.func.isRequired,
     equalleft: PropTypes.array.isRequired,
