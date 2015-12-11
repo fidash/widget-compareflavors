@@ -7,7 +7,7 @@ import {Label} from "react-bootstrap";
 import FlavorList from "../components/FlavorList";
 import Header from "../components/Header";
 import Selector from "../components/Selector";
-import {toggleVisibility, setFlavors, setLeft, setRight, clearLR, setRegion} from "../actions/index";
+import {toggleVisibility, setFlavors, setLeft, setRight, clearLR, setRegion, setRegions, deleteFlavor, copyFlavor, replaceFlavor} from "../actions/index";
 import {flavorSelectors} from "../selectors/flavorSelectors";
 
 class App extends Component {
@@ -15,12 +15,18 @@ class App extends Component {
     constructor(props) {
         super(props);
         this.MashupPlatform = window.MashupPlatform;
-        this.getOpenStackToken(this.getProjects);
-        this.getAdminRegions();
+        this.getOpenStackToken.call(this, this.getProjects);
+        this.getAdminRegions.call(this);
         this.askflavors(this.getpreferences());
         this.MashupPlatform.prefs.registerCallback(() => {
             this.askflavors(this.getpreferences());
         });
+    }
+
+    test() {
+        this.getOpenStackToken.call(this, this.getProjects);
+        this.getAdminRegions.call(this);
+        this.askflavors(this.getpreferences());
     }
 
     getpreferences() {
@@ -33,8 +39,8 @@ class App extends Component {
 
     isAdmin(roles) {
         let found = false;
-        for (var i=0; i<roles.length && !found; i++) {
-            if (role.name === "InfrastructureOwner") {
+        for (let i=0; i<roles.length && !found; i++) {
+            if (roles[i].name === "InfrastructureOwner") {
                 found = true;
             }
         }
@@ -53,19 +59,21 @@ class App extends Component {
             onSuccess: function (response) {
 
                 let responseBody = JSON.parse(response.responseText);
-                this.adminRegions = [];
+                let adminRegions = [];
 
                 responseBody.organizations.forEach(function (organization) {
-                    if (isAdmin(organization.roles)) {
-                        this.adminRegions.push(organization.name.replace(" FIDASH", ""));
+                    if (this.isAdmin(organization.roles)) {
+                        adminRegions.push(organization.name.replace(" FIDASH", ""));
                     }
-                });
+                }.bind(this));
+                this.props.dispatch(setRegions(adminRegions));
+
             }.bind(this),
             onFailure: function (error) {
                 console.log("Failed to get the admin regions");
             }
         };
-        
+
         MashupPlatform.http.makeRequest(App.IDM_URL + "/user", options);
     }
 
@@ -87,12 +95,12 @@ class App extends Component {
         // Add scope if any
         if (projectId) {
             postBody.auth.scope = {
-                "project":{  
+                "project":{
                     "id": projectId
                  }
             };
         }
-        
+
         let options = {
             method: "POST",
             requestHeaders: {
@@ -154,7 +162,7 @@ class App extends Component {
                 }
             }.bind(this),
             onFailure: function (error) {
-                console.log("Failed to get project permissions fo project " + project + ".");
+                console.log("Failed to get project permissions for project " + project + ".");
             }
         };
 
@@ -168,7 +176,7 @@ class App extends Component {
             sub.onNext(response);
             sub.onCompleted();
         };
-        const onfail = response => {
+        const onfail = response => {list.indexOf(target)
             sub.onError(response);
             sub.onCompleted();
         };
@@ -198,29 +206,32 @@ class App extends Component {
     }
 
     askflavors(preferences) {
-        const sub = this.makeRequest(preferences, "v1/flavors?public", "GET");
+        // const sub = this.makeRequest(preferences, "v1/flavors?public", "GET");
 
-        sub.map(response => {
-            return JSON.parse(response.response);
-        }).map(data => data.flavors)
+        // sub.map(response => {
+        //     return JSON.parse(response.response);
+        // }).map(data => data.flavors)
             // .map(
-            //     data => [...data.flavors, {
-            //         // this map will be removed, this is to test things :)
-            //         disk: 3,
-            //         public: true,
-            //         name: "Should Be Removed",
-            //         id: "random",
-            //         ram: 512,
-            //         vcpus: 2
-            //     }, {
-            //         disk: 1,
-            //         public: false,
-            //         name: "To check",
-            //         id: "random2",
-            //         ram: 1024,
-            //         vcpus: 2
-            //     }])
-            .subscribe(data => {
+            let data = [
+                {
+                // this map will be removed, this is to test things :)
+                disk: 3,
+                public: true,
+                name: "Should Be Removed",
+                id: "random",
+                ram: 512,
+                vcpus: 2,
+                nodes: ["Spain2"]
+            }, {
+                disk: 1,
+                public: false,
+                name: "To check",
+                id: "random2",
+                ram: 1024,
+                vcpus: 2,
+                nodes: ["Berlin2"]
+            }];
+            // .subscribe(data => {
                 // Divide in public/private and set it
                 const privateflavors = data.filter(f => !f.public);
                 const publicflavors = data.filter(f => f.public);
@@ -229,11 +240,11 @@ class App extends Component {
                 // this.props.dispatch(setFlavors(data.flavors));
                 this.props.dispatch(setFlavors(publicflavors, privateflavors));
                 this.props.dispatch(clearLR());
-            }, () => {
+            // }, () => {
                 // On error, clean everything!
-                this.props.dispatch(setFlavors([], []));
-                this.props.dispatch(clearLR());
-            });
+            //     this.props.dispatch(setFlavors([], []));
+            //     this.props.dispatch(clearLR());
+            // });
     }
 
     handleFlavorClick(dispatchf, data) {
@@ -275,6 +286,10 @@ class App extends Component {
         }.bind(this);
     }
 
+    getSelectedFlavor(list) {
+        return list.find(x => x.class === "active");
+    }
+
     render() {
         const buildDivStyle = float => {
             return {
@@ -300,9 +315,16 @@ class App extends Component {
             <div>
               <Header
                   canclear={left !== ""}
+                  candelete={right !== ""}
+                  canreplace={left !== "" && right !== ""}
+                  cancopy={left !== ""}
                   filter={filter}
                   onClearClick={() => dispatch(clearLR())}
-                  onFilterClick={() => dispatch(toggleVisibility())}/>
+                  onFilterClick={() => dispatch(toggleVisibility())}
+                  onDeleteFlavor={() => dispatch(deleteFlavor(right))}
+                  onCopyFlavor={() => dispatch(copyFlavor(left, region))}
+                  onTest={this.test.bind(this)}
+                  onReplaceFlavor={() => dispatch(replaceFlavor(left, right, region))}/>
               <div>
                 <div style={divStyleL}>
                   <Label>Public Flavors</Label>
@@ -340,7 +362,7 @@ App.propTypes = {
     left: PropTypes.string.isRequired,
     privateflavors: PropTypes.array.isRequired,
     publicflavors: PropTypes.array.isRequired,
-    region: PropTypes.string.isRequired,
+    region: PropTypes.string,
     regions: PropTypes.array.isRequired,
     right: PropTypes.string.isRequired
 };

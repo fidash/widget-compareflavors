@@ -71,11 +71,6 @@ nav.collapse.in {
     background-color: #787878 !important; /* #66A2ED !important; */
 }
 
-.imgicon {
-    height: 15px;
-    width: 15px;
-}
-
 .nav > li > a {
     padding: 8px 15px;
 }

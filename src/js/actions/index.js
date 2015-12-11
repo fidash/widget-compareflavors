@@ -33,3 +33,19 @@ export function setRegion(region) {
 export function clearLR() {
     return {type: types.CLEAR_LR};
 }
+
+export function deleteFlavor(flavorId) {
+  return {type: types.DELETE_FLAVOR, flavorId};
+}
+
+export function copyFlavor(flavorId, region) {
+  return {type: types.COPY_FLAVOR, flavorId, region};
+}
+
+export function replaceFlavor(sourceId, targetId, region) {
+  return {type: types.REPLACE_FLAVOR, sourceId, targetId, region};
+}
+
+export function setRegions(regions) {
+    return {type: types.SET_REGIONS, regions};
+}

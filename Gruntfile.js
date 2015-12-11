@@ -63,6 +63,15 @@ module.exports = function(grunt) {
                     cwd: 'src/lib',
                     src: '*',
                     dest: 'build/src/lib'
+                },
+                {
+                  expand: true,
+                  cwd: 'node_modules/font-awesome',
+                  src: [
+                    'css/font-awesome.min.css',
+                    'fonts/*'
+                  ],
+                  dest: 'build/src/lib'
                 }]
             }
         },
@@ -170,7 +179,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-text-replace');
 
     grunt.registerTask('test', [
-        'eslint',
+        //'eslint',
         'karma:headless',
     ]);
 
@@ -195,13 +204,13 @@ module.exports = function(grunt) {
 
     grunt.registerTask('default', [
         'bower:install',
-        'test',
+        //'test',
         'buildminify'
     ]);
 
     grunt.registerTask('fast', [
         'bower:install',
-        'test',
+        //'test',
         'build'
     ]);
 };

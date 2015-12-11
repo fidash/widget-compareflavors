@@ -39,6 +39,7 @@ function selectLeftRight(select, publicflavors, privateflavors) {
 const flavorsSelector = state => state.flavors;
 const filterSelector = state => state.filter;
 const selectSelector = state => state.select;
+const regionsSelector = state => state.regions;
 
 function otherEqual({left, right}, {publicflavors, privateflavors}) {
     if ((left === "" && right === "") || (left !== "" && right !== "")) {
@@ -65,17 +66,29 @@ function otherEqual({left, right}, {publicflavors, privateflavors}) {
     };
 }
 
+function checkRegions(flavorList) {
+    let isCorrect = true;
+    for (let i = 0; i<flavorList.length && isCorrect === true; i++) {
+        if (!flavorList[i].nodes || flavorList[i].nodes.length === 0) {
+            isCorrect = false;
+        }
+    }
+
+    return isCorrect;
+}
+
 export const flavorSelectors = createSelector(
     flavorsSelector,
     filterSelector,
     selectSelector,
-    (flavors, filter, select) => {
+    regionsSelector,
+    (flavors, filter, select, regions) => {
         const {publicflavors: originalpublic, privateflavors: originalprivate} = flavors;
         const {region} = select;
-        const regions = new Set(originalprivate.map(x => x.nodes).reduce((acc, x) => [...acc, ...x], []));
+        const regionsList = regions.regions;
         const inRegion = (flavor, r) => new Set(flavor.nodes).has(r);
-        const defaultregion = (regions.size === 0) ? "" : [...regions][0];
-        const regionselected = (regions.has(region) ? region : defaultregion);
+        const defaultregion = (regionsList.size === 0) ? "" : [...regionsList][0];
+        const regionselected = (regionsList.indexOf(region) !== -1 ? region : defaultregion);
         const newprivateflavors = originalprivate.filter(f => inRegion(f, regionselected));
 
         const {publicflavors, privateflavors} = selectPublicPrivate({
@@ -96,7 +109,7 @@ export const flavorSelectors = createSelector(
             privateflavors,
             publicflavors,
             region: regionselected,
-            regions: [...regions],
+            regions: [...regionsList],
             right
         };
     }

@@ -11,7 +11,7 @@ const FlavorList = props => {
         <NavItem
             className={(inEqualList(e.id)) ? "itemequal" : ""}
             eventKey={e.id}
-            key={e.id}
+            key={Math.random()}
             onMouseDown={ev => ev.preventDefault()}>
           {e.name}
         </NavItem>);

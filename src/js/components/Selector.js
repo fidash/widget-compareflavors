@@ -19,7 +19,7 @@ const Selector = props => {
 Selector.propTypes = {
     onChange: PropTypes.func.isRequired,
     options: PropTypes.array.isRequired,
-    selected: PropTypes.string.isRequired
+    selected: PropTypes.string
 };
 
 export default Selector;
