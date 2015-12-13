@@ -36,7 +36,7 @@ nav.collapse.in {
 
 .btn-toolbar > .btn {
     float: none;
-    font-size: 11px;
+    font-size: 14px;
     padding: 2px 3px;
     border: medium none;
 }
@@ -80,16 +80,15 @@ nav.collapse.in {
 }
 
 .placeholder {
-    display: inline;
+    width: 100%;
     padding: 0.2em 0.6em 0.3em;
-    font-size: 75%;
+    font-size: 16px;
     font-weight: 700;
     line-height: 1;
     color: #FFF;
     text-align: center;
     white-space: nowrap;
     vertical-align: baseline;
-    border-radius: 0.25em;
     background-color: #777;
 }
 
@@ -99,6 +98,7 @@ nav.collapse.in {
 
 .Dropdown-menu {
     position: absolute;
+    margin-top: 4px;
     top: 21px;
     left: 5%;
     width: 90%;
@@ -108,19 +108,25 @@ nav.collapse.in {
 
 .Dropdown-option {
     display: block;
-    margin-top: 3px;
     padding: 0.2em 0.6em 0.3em;
-    font-size: 75%;
+    font-size: 16px;
     font-weight: 700;
     line-height: 1;
     color: #FFF;
     text-align: center;
     white-space: nowrap;
     vertical-align: baseline;
-    border-radius: 0.25em;
+    border: solid 1px;
     background-color: #777;
 }
 
 .Dropdown-option:hover {
     cursor: pointer;
+}
+
+.label {
+    font-size: 16px;
+    width: 100%;
+    display: block;
+    border-radius: 0;
 }
