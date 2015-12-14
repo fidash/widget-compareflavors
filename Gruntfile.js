@@ -204,13 +204,13 @@ module.exports = function(grunt) {
 
     grunt.registerTask('default', [
         'bower:install',
-        //'test',
+        'test',
         'buildminify'
     ]);
 
     grunt.registerTask('fast', [
         'bower:install',
-        //'test',
+        'test',
         'build'
     ]);
 };

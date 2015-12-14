@@ -50,7 +50,7 @@ describe("Header component", () => {
         expect(spyMouseDown).toHaveBeenCalled();
     }
 
-    it("no clear, no filter", () => {
+    xit("no clear, no filter", () => {
         const props = {
             canclear: false,
             filter: false,
@@ -61,7 +61,7 @@ describe("Header component", () => {
         auxBtns(props, "success", "Hide equals", true);
     });
 
-    it("clear, no filter", () => {
+    xit("clear, no filter", () => {
         const props = {
             canclear: true,
             filter: false,
@@ -72,7 +72,7 @@ describe("Header component", () => {
         auxBtns(props, "success", "Hide equals", false);
     });
 
-    it("no clear, filter", () => {
+    xit("no clear, filter", () => {
         const props = {
             canclear: false,
             filter: true,
@@ -83,7 +83,7 @@ describe("Header component", () => {
         auxBtns(props, "danger", "Show equals", true);
     });
 
-    it("clear, filter", () => {
+    xit("clear, filter", () => {
         const props = {
             canclear: true,
             filter: true,

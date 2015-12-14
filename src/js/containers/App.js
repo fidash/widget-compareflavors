@@ -23,10 +23,9 @@ class App extends Component {
         });
     }
 
-    test() {
-        this.getOpenStackToken.call(this, this.getProjects);
-        this.getAdminRegions.call(this);
-        this.askflavors(this.getpreferences());
+    clearState() {
+        this.props.dispatch(setFlavors([], []));
+        this.props.dispatch(clearLR());
     }
 
     getpreferences() {
@@ -69,9 +68,7 @@ class App extends Component {
                 this.props.dispatch(setRegions(adminRegions));
 
             }.bind(this),
-            onFailure: function (error) {
-                console.log("Failed to get the admin regions");
-            }
+            onFailure: this.clearState.bind(this)
         };
 
         MashupPlatform.http.makeRequest(App.IDM_URL + "/user", options);
@@ -111,16 +108,14 @@ class App extends Component {
             contentType: "application/json",
             postBody: JSON.stringify(postBody),
             onSuccess: success.bind(this),
-            onFailure: function (error) {
-                console.log("Failed to get OpenStack token");
-            }
+            onFailure: this.clearState.bind(this)
         };
 
         MashupPlatform.http.makeRequest(App.KEYSTONE_URL + "/auth/tokens", options);
     }
 
     getProjects(response) {
-        this.generalToken = response.getHeader('x-subject-token');
+        const generalToken = response.getHeader('x-subject-token');
         let username = MashupPlatform.context.get('username');
         let options = {
             method: "GET",
@@ -132,22 +127,20 @@ class App extends Component {
                 let responseBody = JSON.parse(response.responseText);
                 responseBody.role_assignments.forEach(function (role) {
                     let project = role.scope.project.id;
-                    this.getProjectPermissions(project);
+                    this.getProjectPermissions(project, generalToken);
                 }.bind(this));
             }.bind(this),
-            onFailure: function (error) {
-                console.log("Failed to get projects");
-            }
+            onFailure: this.clearState.bind(this)
         };
 
         MashupPlatform.http.makeRequest(App.KEYSTONE_URL + "/role_assignments?user.id=" + username, options);
     }
 
-    getProjectPermissions(project) {
+    getProjectPermissions(project, generalToken) {
         let options = {
             method: "GET",
             requestHeaders: {
-                "X-Auth-Token": this.generalToken,
+                "X-Auth-Token": generalToken,
                 "Accept": "application/json"
             },
             onSuccess: function (response) {
@@ -161,9 +154,7 @@ class App extends Component {
                     }, project);
                 }
             }.bind(this),
-            onFailure: function (error) {
-                console.log("Failed to get project permissions for project " + project + ".");
-            }
+            onFailure: this.clearState.bind(this)
         };
 
         MashupPlatform.http.makeRequest(App.KEYSTONE_URL + "/projects/" + project, options);
@@ -323,7 +314,6 @@ class App extends Component {
                   onFilterClick={() => dispatch(toggleVisibility())}
                   onDeleteFlavor={() => dispatch(deleteFlavor(right))}
                   onCopyFlavor={() => dispatch(copyFlavor(left, region))}
-                  onTest={this.test.bind(this)}
                   onReplaceFlavor={() => dispatch(replaceFlavor(left, right, region))}/>
               <div>
                 <div style={divStyleL}>

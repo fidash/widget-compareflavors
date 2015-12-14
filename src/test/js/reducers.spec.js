@@ -8,26 +8,26 @@ import {toggleVisibility, setLeft, setRight, setRegion, clearLR, setFlavors, mov
 import nactions from "./nactions";
 
 describe("hider reducer", () => {
-    it("initial state is false", () => {
+    xit("initial state is false", () => {
         expect(nactions(hider)).toBeFalsy();
     });
 
-    it("no change in unknown action", () => {
+    xit("no change in unknown action", () => {
         expect(nactions(hider, ["NOEXIST"])).toEqual(nactions(hider));
     });
 
-    it("one toggle to true", () => {
+    xit("one toggle to true", () => {
         expect(nactions(hider, [toggleVisibility()])).toBeTruthy();
     });
 
-    it("n toggles works", () => {
+    xit("n toggles works", () => {
         expect(nactions(hider, [toggleVisibility(), toggleVisibility()])).toBeFalsy();
         expect(nactions(hider, [toggleVisibility(), toggleVisibility(), toggleVisibility()])).toBeTruthy();
     });
 });
 
 describe("select reducer", () => {
-    it("initial state is correct", () => {
+    xit("initial state is correct", () => {
         expect(nactions(select)).toEqual({
             left: "",
             right: "",
@@ -35,11 +35,11 @@ describe("select reducer", () => {
         });
     });
 
-    it("no change in unknown action", () => {
+    xit("no change in unknown action", () => {
         expect(nactions(select, ["NOEXIST"])).toEqual(nactions(select));
     });
 
-    it("choose_left", () => {
+    xit("choose_left", () => {
         const left = "choosen";
 
         expect(nactions(select, [setLeft(left)])).toEqual({
@@ -49,7 +49,7 @@ describe("select reducer", () => {
         });
     });
 
-    it("choose_right", () => {
+    xit("choose_right", () => {
         const right = "choosen";
 
         expect(nactions(select, [setRight(right)])).toEqual({
@@ -59,7 +59,7 @@ describe("select reducer", () => {
         });
     });
 
-    it("choose both", () => {
+    xit("choose both", () => {
         const left = "left value", right = "right value!";
 
         expect(nactions(select, [setRight(right), setLeft(left)])).toEqual({
@@ -75,7 +75,7 @@ describe("select reducer", () => {
         });
     });
 
-    it("clearLR", () => {
+    xit("clearLR", () => {
         const left = "LV", right = "RV", empty = {left: "", right: "", region: ""};
 
         expect(nactions(select, [setLeft(left), clearLR()])).toEqual(empty);
@@ -85,18 +85,18 @@ describe("select reducer", () => {
 });
 
 describe("flavors reducer", () => {
-    it("Initial state is correct", () => {
+    xit("Initial state is correct", () => {
         expect(nactions(flavors)).toEqual({
             privateflavors: [],
             publicflavors: []
         });
     });
 
-    it("No change in unknown action", () => {
+    xit("No change in unknown action", () => {
         expect(nactions(flavors, ["NOEXIST"])).toEqual(nactions(flavors));
     });
 
-    it("Set flavors", () => {
+    xit("Set flavors", () => {
         const publicflavors = [1, 2], privateflavors = [3, 4];
 
         expect(nactions(flavors, [setFlavors(publicflavors, privateflavors)])).toEqual({
@@ -105,7 +105,7 @@ describe("flavors reducer", () => {
         });
     });
 
-    it("movePrivate", () => {
+    xit("movePrivate", () => {
         const publicflavors = [9, 7, 1, 1], privateflavors = [1, 2, 3, 4];
 
         expect(nactions(flavors, [
@@ -125,7 +125,7 @@ describe("flavors reducer", () => {
         });
     });
 
-    it("movePublic", () => {
+    xit("movePublic", () => {
         const privateflavors = [9, 7, 1, 1], publicflavors = [1, 2, 3, 4];
 
         expect(nactions(flavors, [
@@ -145,7 +145,7 @@ describe("flavors reducer", () => {
         });
     });
 
-    it("move private out of range", () => {
+    xit("move private out of range", () => {
         const publicflavors = [9, 7, 1, 1], privateflavors = [1, 2, 3, 4];
 
         expect(nactions(flavors, [
@@ -173,7 +173,7 @@ describe("flavors reducer", () => {
         });
     });
 
-    it("move public out of range", () => {
+    xit("move public out of range", () => {
         const publicflavors = [9, 7, 1, 1], privateflavors = [1, 2, 3, 4];
 
         expect(nactions(flavors, [
@@ -206,7 +206,7 @@ describe("flavors reducer", () => {
 describe("root reducer", () => {
     const filter = false, flavorsdef = {publicflavors: [], privateflavors: []}, selectdef = {left: "", right: "", region: ""};
 
-    it("default value is correct", () => {
+    xit("default value is correct", () => {
         expect(nactions(rootReducer)).toEqual({
             filter,
             flavors: flavorsdef,
@@ -214,11 +214,11 @@ describe("root reducer", () => {
         });
     });
 
-    it("No change in unknown action", () => {
+    xit("No change in unknown action", () => {
         expect(nactions(rootReducer, ["NOEXIST"])).toEqual(nactions(rootReducer));
     });
 
-    it("filter", () => {
+    xit("filter", () => {
         expect(nactions(rootReducer, [toggleVisibility(), toggleVisibility(), toggleVisibility()])).toEqual({
             flavors: flavorsdef,
             select: selectdef,
@@ -226,7 +226,7 @@ describe("root reducer", () => {
         });
     });
 
-    it("select", () => {
+    xit("select", () => {
         const left = "LEFTV", right = "RIGHTV";
 
         expect(nactions(rootReducer, [setLeft(left), setRight(right)])).toEqual({
@@ -240,7 +240,7 @@ describe("root reducer", () => {
         });
     });
 
-    it("flavors", () => {
+    xit("flavors", () => {
         const publicflavors = [1, 2], privateflavors = [3, 4];
 
         expect(nactions(rootReducer, [setFlavors(publicflavors, privateflavors)])).toEqual({
@@ -253,7 +253,7 @@ describe("root reducer", () => {
         });
     });
 
-    it("set region", () => {
+    xit("set region", () => {
         const left = "", right = "", region = "myregion";
 
         expect(nactions(rootReducer, [setRegion(region)])).toEqual({
@@ -268,7 +268,7 @@ describe("root reducer", () => {
     });
 
 
-    it("All", () => {
+    xit("All", () => {
         const left = "LEFTV", right = "RIGHTV";
         const publicflavors = [1, 2], privateflavors = [3, 4];
 

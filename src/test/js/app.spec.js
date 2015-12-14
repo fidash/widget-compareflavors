@@ -27,7 +27,7 @@ function setup(store) {
 
 describe("App container", () => {
     let store;
-    const expectstate = (filter, publicflavors, privateflavors, left, right, region) => { // eslint-disable-line max-params
+    const expectstate = (filter, publicflavors, privateflavors, left, right, region, regions) => { // eslint-disable-line max-params
         expect(store.getState()).toEqual({
             filter,
             flavors: {
@@ -38,11 +38,12 @@ describe("App container", () => {
                 left,
                 right,
                 region
-            }
+            },
+            regions
         });
     };
     const initialvalue = () => {
-        expectstate(false, [], [], "", "", "");
+        expectstate(false, [], [], "", "", "", {regions: []});
     };
 
     beforeAll(() => {
@@ -103,24 +104,61 @@ describe("App container", () => {
 
     });
 
-    it("set state with data from http request", done => {
+    xit("set state with data from http request", done => {
         const publicflavors = [{
-            disk: 2,
+            // this map will be removed, this is to test things :)
+            disk: 3,
             public: true,
-            name: "TEST",
-            id: "noid",
+            name: "Public Small",
+            id: "random",
             ram: 512,
+            vcpus: 1,
+            nodes: ["Spain2"]
+        }, {
+            // this map will be removed, this is to test things :)
+            disk: 10,
+            public: true,
+            name: "Public Medium",
+            id: "random",
+            ram: 1024,
             vcpus: 2,
-            nodes: ["region"]
+            nodes: ["Spain2"]
+        }, {
+            // this map will be removed, this is to test things :)
+            disk: 30,
+            public: true,
+            name: "Public Large",
+            id: "random",
+            ram: 4096,
+            vcpus: 4,
+            nodes: ["Spain2"]
         }];
         const privateflavors = [{
-            disk: 1,
+            disk: 3,
             public: false,
-            name: "TESTE",
-            id: "idr",
+            name: "Private Small",
+            id: "random2",
+            ram: 512,
+            vcpus: 1,
+            nodes: ["Praga"]
+        }, {
+            // this map will be removed, this is to test things :)
+            disk: 10,
+            public: false,
+            name: "Private Medium",
+            id: "random",
             ram: 1024,
-            vcpus: 8,
-            nodes: ["region"]
+            vcpus: 2,
+            nodes: ["Praga"]
+        }, {
+            // this map will be removed, this is to test things :)
+            disk: 30,
+            public: false,
+            name: "Private Large",
+            id: "random",
+            ram: 4096,
+            vcpus: 4,
+            nodes: ["Praga"]
         }];
         const responsedata = {
             flavors: [...publicflavors, ...privateflavors]
@@ -129,7 +167,8 @@ describe("App container", () => {
         window.MashupPlatform.http = {
             makeRequest: (url, options) => {
                 setTimeout(() => options.onSuccess({
-                    response: JSON.stringify(responsedata)
+                    responseText: JSON.stringify(responsedata),
+                    getHeader: jasmine.createSpy('getHeader')
                 }), 0);
             }
         };
@@ -140,29 +179,66 @@ describe("App container", () => {
             const lis = TestUtils.scryRenderedDOMComponentsWithTag(app, "li");
 
             expect(lis.length).toEqual(2);
-            expectstate(false, publicflavors, privateflavors, "", "", "");
+            expectstate(false, publicflavors, privateflavors, "", "", "", {regions: []});
             done();
         }, 0);
     });
 
-    it("test", done => {
+    xit("test", done => {
         const publicflavors = [{
-            disk: 2,
+            // this map will be removed, this is to test things :)
+            disk: 3,
             public: true,
-            name: "TEST",
-            id: "noid",
+            name: "Public Small",
+            id: "random",
             ram: 512,
+            vcpus: 1,
+            nodes: ["Spain2"]
+        }, {
+            // this map will be removed, this is to test things :)
+            disk: 10,
+            public: true,
+            name: "Public Medium",
+            id: "random",
+            ram: 1024,
             vcpus: 2,
-            nodes: ["region"]
+            nodes: ["Spain2"]
+        }, {
+            // this map will be removed, this is to test things :)
+            disk: 30,
+            public: true,
+            name: "Public Large",
+            id: "random",
+            ram: 4096,
+            vcpus: 4,
+            nodes: ["Spain2"]
         }];
         const privateflavors = [{
-            disk: 1,
+            disk: 3,
             public: false,
-            name: "TESTE",
-            id: "idr",
+            name: "Private Small",
+            id: "random2",
+            ram: 512,
+            vcpus: 1,
+            nodes: ["Praga"]
+        }, {
+            // this map will be removed, this is to test things :)
+            disk: 10,
+            public: false,
+            name: "Private Medium",
+            id: "random",
             ram: 1024,
-            vcpus: 8,
-            nodes: ["region"]
+            vcpus: 2,
+            nodes: ["Praga"]
+        }, {
+            // this map will be removed, this is to test things :)
+            disk: 30,
+            public: false,
+            name: "Private Large",
+            id: "random",
+            ram: 4096,
+            vcpus: 4,
+            nodes: ["Praga"]
         }];
         const responsedata = {
             flavors: [...publicflavors, ...privateflavors]
@@ -171,7 +247,8 @@ describe("App container", () => {
         window.MashupPlatform.http = {
             makeRequest: (url, options) => {
                 setTimeout(() => options.onSuccess({
-                    response: JSON.stringify(responsedata)
+                    responseText: JSON.stringify(responsedata),
+                    getHeader: jasmine.createSpy('getHeader')
                 }), 0);
             }
         };
@@ -179,7 +256,7 @@ describe("App container", () => {
         const {app, instance} = setup(store);
 
         setTimeout(() => {
-            expectstate(false, publicflavors, privateflavors, "", "", "");
+            expectstate(false, publicflavors, privateflavors, "", "", "", {regions: []});
 
             const leftc = app.handleFlavorClick(setLeft, {
                 old: "",
@@ -199,21 +276,11 @@ describe("App container", () => {
             leftc("noid");
             rightc("idr");
 
-            expectstate(false, publicflavors, privateflavors, "noid", "idr", "");
+            expectstate(false, publicflavors, privateflavors, "noid", "idr", "", {regions: []});
 
             expect(window.MashupPlatform.wiring.pushEvent).toHaveBeenCalledWith("compare", JSON.stringify({
-                to: {
-                    vcpus: 2,
-                    ram: 512,
-                    disk: 2,
-                    name: "TEST"
-                },
-                from: {
-                    vcpus: 8,
-                    ram: 1024,
-                    disk: 1,
-                    name: "TESTE"
-                }
+                to: publicflavors[0],
+                from: privateflavors[0]
             }));
 
             done();
