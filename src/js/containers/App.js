@@ -208,19 +208,55 @@ class App extends Component {
                 // this map will be removed, this is to test things :)
                 disk: 3,
                 public: true,
-                name: "Should Be Removed",
+                name: "Public Small",
                 id: "random",
                 ram: 512,
+                vcpus: 1,
+                nodes: ["Spain2"]
+            }, {
+                // this map will be removed, this is to test things :)
+                disk: 10,
+                public: true,
+                name: "Public Medium",
+                id: "random",
+                ram: 1024,
                 vcpus: 2,
                 nodes: ["Spain2"]
             }, {
-                disk: 1,
+                // this map will be removed, this is to test things :)
+                disk: 30,
+                public: true,
+                name: "Public Large",
+                id: "random",
+                ram: 4096,
+                vcpus: 4,
+                nodes: ["Spain2"]
+            }, {
+                disk: 3,
                 public: false,
-                name: "To check",
+                name: "Private Small",
                 id: "random2",
+                ram: 512,
+                vcpus: 1,
+                nodes: ["Praga"]
+            }, {
+                // this map will be removed, this is to test things :)
+                disk: 10,
+                public: false,
+                name: "Private Medium",
+                id: "random",
                 ram: 1024,
                 vcpus: 2,
-                nodes: ["Berlin2"]
+                nodes: ["Praga"]
+            }, {
+                // this map will be removed, this is to test things :)
+                disk: 30,
+                public: false,
+                name: "Private Large",
+                id: "random",
+                ram: 4096,
+                vcpus: 4,
+                nodes: ["Praga"]
             }];
             // .subscribe(data => {
                 // Divide in public/private and set it
