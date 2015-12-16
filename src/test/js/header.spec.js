@@ -20,7 +20,7 @@ describe("Header component", () => {
     function auxBtns(props, filterBsStyle, filterText, clearDisabled) {
         const {instance} = setup(props);
 
-        const [filterbtn, clearbtn] = instance.props.children;
+        const [filterbtn, copubtn, replacebtn, deletebtn, clearbtn] = instance.props.children;
 
         expect(filterbtn.props.bsStyle).toEqual(filterBsStyle);
         const text = filterbtn.props.children;
@@ -50,7 +50,7 @@ describe("Header component", () => {
         expect(spyMouseDown).toHaveBeenCalled();
     }
 
-    xit("no clear, no filter", () => {
+    it("no clear, no filter", () => {
         const props = {
             canclear: false,
             filter: false,
@@ -61,7 +61,7 @@ describe("Header component", () => {
         auxBtns(props, "success", "Hide equals", true);
     });
 
-    xit("clear, no filter", () => {
+    it("clear, no filter", () => {
         const props = {
             canclear: true,
             filter: false,
@@ -72,7 +72,7 @@ describe("Header component", () => {
         auxBtns(props, "success", "Hide equals", false);
     });
 
-    xit("no clear, filter", () => {
+    it("no clear, filter", () => {
         const props = {
             canclear: false,
             filter: true,
@@ -83,7 +83,7 @@ describe("Header component", () => {
         auxBtns(props, "danger", "Show equals", true);
     });
 
-    xit("clear, filter", () => {
+    it("clear, filter", () => {
         const props = {
             canclear: true,
             filter: true,

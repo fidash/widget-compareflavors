@@ -1,7 +1,7 @@
 "use strict";
 
 import {flavorSelectors} from "../../js/selectors/flavorSelectors";
-import {toggleVisibility, setFlavors, setLeft, setRight, setRegion} from "../../js/actions/index";
+import {toggleVisibility, setFlavors, setLeft, setRight, setRegion, setRegions} from "../../js/actions/index";
 import configureStore from "../../js/stores/configureStore";
 
 describe("Selectors", () => {
@@ -24,13 +24,13 @@ describe("Selectors", () => {
         store = configureStore();
     });
 
-    xit("initial state is correct", () => {
+    it("initial state is correct", () => {
         const state = flavorSelectors(store.getState());
 
         expecstate(state, false, [], [], "", "", [], [], undefined, []);
     });
 
-    xit("filter public", () => {
+    it("filter public", () => {
         const publicflavors = [{
             public: true,
             disk: 3,
@@ -52,6 +52,7 @@ describe("Selectors", () => {
             nodes: ["region"]
         }];
 
+        store.dispatch(setRegions(["region"]));
         store.dispatch(toggleVisibility());
         store.dispatch(setFlavors(publicflavors, privateflavors));
 
@@ -60,7 +61,7 @@ describe("Selectors", () => {
         expecstate(state, true, [{public: true, disk: 4, ram: 5, vcpus: 8, nodes: []}], privateflavors, "", "", [], [], "region", ["region"]);
     });
 
-    xit("select with non exist id return empty", () => {
+    it("select with non exist id return empty", () => {
         const publicflavors = [{
             public: true,
             id: "123",
@@ -85,6 +86,7 @@ describe("Selectors", () => {
             nodes: ["region"]
         }];
 
+        store.dispatch(setRegions(["region"]));
         store.dispatch(setFlavors(publicflavors, privateflavors));
         store.dispatch(setLeft("9711"));
         store.dispatch(setRight("9711"));
@@ -94,7 +96,7 @@ describe("Selectors", () => {
         expecstate(state, false, publicflavors, privateflavors, "", "", [], [], "region", ["region"]);
     });
 
-    xit("select with exist left id", () => {
+    it("select with exist left id", () => {
         const publicflavors = [{
             public: true,
             id: "123",
@@ -119,6 +121,7 @@ describe("Selectors", () => {
             nodes: ["region"]
         }];
 
+        store.dispatch(setRegions(["region"]));
         store.dispatch(setFlavors(publicflavors, privateflavors));
         store.dispatch(setLeft("123"));
         store.dispatch(setRight("9711"));
@@ -128,7 +131,7 @@ describe("Selectors", () => {
         expecstate(state, false, publicflavors, privateflavors, "123", "", [], ["285"], "region", ["region"]);
     });
 
-    xit("select with exist right id", () => {
+    it("select with exist right id", () => {
         const publicflavors = [{
             public: true,
             id: "123",
@@ -153,6 +156,7 @@ describe("Selectors", () => {
             nodes: ["region"]
         }];
 
+        store.dispatch(setRegions(["region"]));
         store.dispatch(setFlavors(publicflavors, privateflavors));
         store.dispatch(setLeft("9711"));
         store.dispatch(setRight("285"));
@@ -162,7 +166,7 @@ describe("Selectors", () => {
         expecstate(state, false, publicflavors, privateflavors, "", "285", ["123"], [], "region", ["region"]);
     });
 
-    xit("when both selected, no equal returns", () => {
+    it("when both selected, no equal returns", () => {
         const publicflavors = [{
             public: true,
             id: "123",
@@ -194,6 +198,7 @@ describe("Selectors", () => {
             nodes: ["region"]
         }];
 
+        store.dispatch(setRegions(["region"]));
         store.dispatch(setFlavors(publicflavors, privateflavors));
         store.dispatch(setLeft("345"));
         store.dispatch(setRight("285"));
@@ -203,7 +208,7 @@ describe("Selectors", () => {
         expecstate(state, false, publicflavors, privateflavors, "345", "285", [], [], "region", ["region"]);
     });
 
-    xit("filter private flavors by region", () => {
+    it("filter private flavors by region", () => {
         const publicflavors = [{
             public: true,
             id: "123",
@@ -235,6 +240,7 @@ describe("Selectors", () => {
             nodes: ["region", "alone"]
         }];
 
+        store.dispatch(setRegions(["region", "alone"]));
         store.dispatch(setFlavors(publicflavors, privateflavors));
         store.dispatch(setRegion("alone"));
 
@@ -249,7 +255,7 @@ describe("Selectors", () => {
         expecstate(state, false, publicflavors, privateflavors, "", "", [], [], "region", ["region", "alone"]);
     });
 
-    xit("filter and region", () => {
+    it("filter and region", () => {
         const publicflavors = [{
             public: true,
             id: "123",
@@ -281,6 +287,7 @@ describe("Selectors", () => {
             nodes: ["shared", "region1"]
         }];
 
+        store.dispatch(setRegions(["shared", "region2", "region1"]));
         store.dispatch(setFlavors(publicflavors, privateflavors));
         store.dispatch(toggleVisibility());
 

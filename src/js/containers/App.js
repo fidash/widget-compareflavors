@@ -120,7 +120,7 @@ class App extends Component {
         let options = {
             method: "GET",
             requestHeaders: {
-                "X-Auth-Token": this.generalToken,
+                "X-Auth-Token": generalToken,
                 "Accept": "application/json"
             },
             onSuccess: function (response) {
@@ -209,7 +209,7 @@ class App extends Component {
                 disk: 3,
                 public: true,
                 name: "Public Small",
-                id: "random",
+                id: "random1",
                 ram: 512,
                 vcpus: 1,
                 nodes: ["Spain2"]
@@ -218,7 +218,7 @@ class App extends Component {
                 disk: 10,
                 public: true,
                 name: "Public Medium",
-                id: "random",
+                id: "random2",
                 ram: 1024,
                 vcpus: 2,
                 nodes: ["Spain2"]
@@ -227,7 +227,7 @@ class App extends Component {
                 disk: 30,
                 public: true,
                 name: "Public Large",
-                id: "random",
+                id: "random3",
                 ram: 4096,
                 vcpus: 4,
                 nodes: ["Spain2"]
@@ -235,28 +235,28 @@ class App extends Component {
                 disk: 3,
                 public: false,
                 name: "Private Small",
-                id: "random2",
+                id: "random4",
                 ram: 512,
                 vcpus: 1,
-                nodes: ["Praga"]
+                nodes: ["Prague"]
             }, {
                 // this map will be removed, this is to test things :)
                 disk: 10,
                 public: false,
                 name: "Private Medium",
-                id: "random",
+                id: "random5",
                 ram: 1024,
                 vcpus: 2,
-                nodes: ["Praga"]
+                nodes: ["Prague"]
             }, {
                 // this map will be removed, this is to test things :)
                 disk: 30,
                 public: false,
                 name: "Private Large",
-                id: "random",
+                id: "random6",
                 ram: 4096,
                 vcpus: 4,
-                nodes: ["Praga"]
+                nodes: ["Prague"]
             }];
             // .subscribe(data => {
                 // Divide in public/private and set it

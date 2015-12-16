@@ -110,7 +110,7 @@ describe("App container", () => {
             disk: 3,
             public: true,
             name: "Public Small",
-            id: "random",
+            id: "random1",
             ram: 512,
             vcpus: 1,
             nodes: ["Spain2"]
@@ -119,7 +119,7 @@ describe("App container", () => {
             disk: 10,
             public: true,
             name: "Public Medium",
-            id: "random",
+            id: "random2",
             ram: 1024,
             vcpus: 2,
             nodes: ["Spain2"]
@@ -128,7 +128,7 @@ describe("App container", () => {
             disk: 30,
             public: true,
             name: "Public Large",
-            id: "random",
+            id: "random3",
             ram: 4096,
             vcpus: 4,
             nodes: ["Spain2"]
@@ -137,41 +137,41 @@ describe("App container", () => {
             disk: 3,
             public: false,
             name: "Private Small",
-            id: "random2",
+            id: "random4",
             ram: 512,
             vcpus: 1,
-            nodes: ["Praga"]
+            nodes: ["Prague"]
         }, {
             // this map will be removed, this is to test things :)
             disk: 10,
             public: false,
             name: "Private Medium",
-            id: "random",
+            id: "random5",
             ram: 1024,
             vcpus: 2,
-            nodes: ["Praga"]
+            nodes: ["Prague"]
         }, {
             // this map will be removed, this is to test things :)
             disk: 30,
             public: false,
             name: "Private Large",
-            id: "random",
+            id: "random6",
             ram: 4096,
             vcpus: 4,
-            nodes: ["Praga"]
+            nodes: ["Prague"]
         }];
         const responsedata = {
             flavors: [...publicflavors, ...privateflavors]
         };
 
-        window.MashupPlatform.http = {
-            makeRequest: (url, options) => {
-                setTimeout(() => options.onSuccess({
-                    responseText: JSON.stringify(responsedata),
-                    getHeader: jasmine.createSpy('getHeader')
-                }), 0);
-            }
-        };
+        // window.MashupPlatform.http = {
+        //     makeRequest: (url, options) => {
+        //         setTimeout(() => options.onSuccess({
+        //             responseText: JSON.stringify(responsedata),
+        //             getHeader: jasmine.createSpy('getHeader')
+        //         }), 0);
+        //     }
+        // };
 
         const {app} = setup(store);
 
@@ -190,7 +190,7 @@ describe("App container", () => {
             disk: 3,
             public: true,
             name: "Public Small",
-            id: "random",
+            id: "random1",
             ram: 512,
             vcpus: 1,
             nodes: ["Spain2"]
@@ -199,7 +199,7 @@ describe("App container", () => {
             disk: 10,
             public: true,
             name: "Public Medium",
-            id: "random",
+            id: "random2",
             ram: 1024,
             vcpus: 2,
             nodes: ["Spain2"]
@@ -208,7 +208,7 @@ describe("App container", () => {
             disk: 30,
             public: true,
             name: "Public Large",
-            id: "random",
+            id: "random3",
             ram: 4096,
             vcpus: 4,
             nodes: ["Spain2"]
@@ -217,28 +217,28 @@ describe("App container", () => {
             disk: 3,
             public: false,
             name: "Private Small",
-            id: "random2",
+            id: "random4",
             ram: 512,
             vcpus: 1,
-            nodes: ["Praga"]
+            nodes: ["Prague"]
         }, {
             // this map will be removed, this is to test things :)
             disk: 10,
             public: false,
             name: "Private Medium",
-            id: "random",
+            id: "random5",
             ram: 1024,
             vcpus: 2,
-            nodes: ["Praga"]
+            nodes: ["Prague"]
         }, {
             // this map will be removed, this is to test things :)
             disk: 30,
             public: false,
             name: "Private Large",
-            id: "random",
+            id: "random6",
             ram: 4096,
             vcpus: 4,
-            nodes: ["Praga"]
+            nodes: ["Prague"]
         }];
         const responsedata = {
             flavors: [...publicflavors, ...privateflavors]
@@ -273,14 +273,24 @@ describe("App container", () => {
                 otherlist: publicflavors
             }).bind(instance);
 
-            leftc("noid");
-            rightc("idr");
+            leftc("random1");
+            rightc("random4");
 
-            expectstate(false, publicflavors, privateflavors, "noid", "idr", "", {regions: []});
+            expectstate(false, publicflavors, privateflavors, "random1", "random4", "", {regions: []});
 
             expect(window.MashupPlatform.wiring.pushEvent).toHaveBeenCalledWith("compare", JSON.stringify({
-                to: publicflavors[0],
-                from: privateflavors[0]
+                to: {
+                    vcpus: 1,
+                    ram: 512,
+                    disk: 3,
+                    name: "Public Small"
+                },
+                from: {
+                    vcpus: 1,
+                    ram: 512,
+                    disk: 3,
+                    name: "Private Small"
+                }
             }));
 
             done();
