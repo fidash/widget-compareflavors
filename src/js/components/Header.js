@@ -14,7 +14,7 @@ const Header = props => {
             <Button bsStyle="info" onClick={onCopyFlavor} disabled={!cancopy} onMouseDown={ev => ev.preventDefault()}><i className="fa fa-files-o"></i> Copy</Button>
             <Button bsStyle="danger" onClick={onReplaceFlavor} disabled={!canreplace} onMouseDown={ev => ev.preventDefault()}><i className="fa fa-retweet"></i> Replace</Button>
             <Button bsStyle="danger" onClick={onDeleteFlavor} disabled={!candelete} onMouseDown={ev => ev.preventDefault()}><i className="fa fa-trash"></i> Delete</Button>
-            <Button bsStyle="info" disabled={!canclear} onClick={onClearClick} onMouseDown={ev => ev.preventDefault()}><i className="fa fa-eraser"></i> Clear</Button>
+            <Button bsStyle="info" disabled={!canclear} onClick={onClearClick} onMouseDown={ev => ev.preventDefault()}><i className="fa fa-eraser"></i> Deselect</Button>
         </ButtonToolbar>
     );
 };
