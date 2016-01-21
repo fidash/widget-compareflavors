@@ -322,7 +322,8 @@ class App extends Component {
             return {
                 float: float,
                 textAlign: "center",
-                width: "50%"
+                width: "50%",
+                "margin-top": "49px"
             };
         };
         const divStyleL = buildDivStyle("left");
@@ -353,7 +354,7 @@ class App extends Component {
                   onReplaceFlavor={() => dispatch(replaceFlavor(left, right, region))}/>
               <div>
                 <div style={divStyleL}>
-                  <Label>Public Flavors</Label>
+                  <Label className="fixedHeaderL">Public Flavors</Label>
                   <FlavorList
                       activeid={left}
                       equallist={equalleft}

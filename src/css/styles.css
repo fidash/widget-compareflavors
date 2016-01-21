@@ -51,7 +51,27 @@ nav.collapse.in {
     margin-bottom: 1px;
     padding-top: 2px;
     padding-bottom: 2px;
+    position: fixed;
+    z-index: 10000;
+    width: 100%;
 }
+
+.fixedHeaderL {
+    position: fixed;
+    width: 50% !important;
+    top: 30px;
+    z-index: 10000;
+    left: 0;
+}
+
+.fixedHeaderR {
+    position: fixed;
+    width: 50% !important;
+    top: 30px;
+    z-index: 10000;
+    left: 50%;
+}
+
 
 .compareBtn {
     position: fixed;
