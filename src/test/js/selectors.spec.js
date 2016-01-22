@@ -58,7 +58,7 @@ describe("Selectors", () => {
 
         const state = flavorSelectors(store.getState());
 
-        expecstate(state, true, [{public: true, disk: 4, ram: 5, vcpus: 8, nodes: []}], privateflavors, "", "", [], [], "region", ["region"]);
+        expecstate(state, true, [{public: true, disk: 4, ram: 5, vcpus: 8, nodes: []}], [], "", "", [], [], "region", ["region"]);
     });
 
     it("select with non exist id return empty", () => {
@@ -293,7 +293,7 @@ describe("Selectors", () => {
 
         let state = flavorSelectors(store.getState());
 
-        expecstate(state, true, [publicflavors[1]], privateflavors, "", "", [], [], "shared", ["shared", "region2", "region1"]);
+        expecstate(state, true, [publicflavors[1]], [privateflavors[1]], "", "", [], [], "shared", ["shared", "region2", "region1"]);
 
         store.dispatch(setRegion("region1"));
         state = flavorSelectors(store.getState());

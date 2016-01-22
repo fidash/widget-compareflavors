@@ -21,10 +21,31 @@ function notInPriv(flav, priv) {
     return privsfilt.length === 0;
 }
 
-function selectPublicPrivate({privateflavors, publicflavors: allpublicflavors}, filter) {
-    const publicflavors = allpublicflavors.filter(
-        f => f.public && (!filter || notInPriv(f, privateflavors))
-    );
+function getEqualsList(privateFlavors, publicFlavors) {
+    let equalsList = [];
+    if (privateFlavors && publicFlavors) {
+        publicFlavors.forEach(flavor => {
+            if(privateFlavors.filter(p => flavorsEqual(flavor, p)).length !== 0) {
+                equalsList.push(flavor);
+            }
+        });
+    }
+
+    return equalsList;
+}
+
+function inEqualsList(flavor, equalsList) {
+    return equalsList.filter(f => flavorsEqual(f, flavor)).length !== 0;
+}
+
+function selectFlavors({privateflavors: allprivateflavors, publicflavors: allpublicflavors}, filter, equalsList) {
+    const publicflavors = allpublicflavors ? allpublicflavors.filter(
+        f => f.public && (!filter || !inEqualsList(f, equalsList))
+    ) : [];
+
+    const privateflavors = allprivateflavors ? allprivateflavors.filter(
+        f => !f.public && (!filter || !inEqualsList(f, equalsList))
+    ) : [];
 
     return {publicflavors, privateflavors};
 }
@@ -90,11 +111,12 @@ export const flavorSelectors = createSelector(
         const defaultregion = (regionsList.size === 0) ? "" : [...regionsList][0];
         const regionselected = (regionsList.indexOf(region) !== -1 ? region : defaultregion);
         const newprivateflavors = originalprivate.filter(f => inRegion(f, regionselected));
+        const equalsList = getEqualsList(newprivateflavors, originalpublic);
 
-        const {publicflavors, privateflavors} = selectPublicPrivate({
+        const {publicflavors, privateflavors} = selectFlavors({
             publicflavors: originalpublic,
             privateflavors: newprivateflavors
-        }, filter);
+        }, filter, equalsList);
         // const {filter, publicflavors} = publicprivate;
         // const oldprivateflavors = publicprivate.privateflavors;
 
