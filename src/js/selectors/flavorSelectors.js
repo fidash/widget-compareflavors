@@ -15,12 +15,6 @@ function flavorsEqual(f1, f2) {
 const findOrEmpty = (def, list) =>
       (typeof list.find(x => x.id === def) !== "undefined") ? def : "";
 
-function notInPriv(flav, priv) {
-    const privsfilt = priv.filter(f => flavorsEqual(flav, f));
-
-    return privsfilt.length === 0;
-}
-
 function getEqualsList(privateFlavors, publicFlavors) {
     let equalsList = [];
     if (privateFlavors && publicFlavors) {
@@ -40,11 +34,11 @@ function inEqualsList(flavor, equalsList) {
 
 function selectFlavors({privateflavors: allprivateflavors, publicflavors: allpublicflavors}, filter, equalsList) {
     const publicflavors = allpublicflavors ? allpublicflavors.filter(
-        f => f.public && (!filter || !inEqualsList(f, equalsList))
+        f => f.nodes.filter(n => n === "Spain2").length > 0 && (!filter || !inEqualsList(f, equalsList))
     ) : [];
 
     const privateflavors = allprivateflavors ? allprivateflavors.filter(
-        f => !f.public && (!filter || !inEqualsList(f, equalsList))
+        f => !filter || !inEqualsList(f, equalsList)
     ) : [];
 
     return {publicflavors, privateflavors};

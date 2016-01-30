@@ -211,8 +211,8 @@ class App extends Component {
         }).map(data => data.flavors)
             .subscribe(data => {
                 // Divide in public/private and set it
-                const privateflavors = data.filter(f => !f.public);
-                const publicflavors = data.filter(f => f.public);
+                const privateflavors = data.filter(f => !f.nodes.filter(n => n === "Spain2").length > 0);
+                const publicflavors = data.filter(f => f.nodes.filter(n => n === "Spain2").length > 0);
 
                 // On OK just dispatch everything :)
                 // this.props.dispatch(setFlavors(data.flavors));
@@ -264,7 +264,7 @@ class App extends Component {
             }.bind(this)
         };
 
-        MashupPlatform.http.makeRequest(this.getpreferences().serverUrl + "/v1/flavors/" + right);
+        MashupPlatform.http.makeRequest(this.getpreferences().serverUrl + "/v1/flavors/" + right, options);
     }
 
     replaceFlavor() {

@@ -5,6 +5,7 @@ import {toggleVisibility, setFlavors, setLeft, setRight, setRegion, setRegions} 
 import configureStore from "../../js/stores/configureStore";
 
 describe("Selectors", () => {
+    const REFERENCE_REGION = "Spain2";
     let store;
     const expecstate = (state, filter, publicflavors, privateflavors, left, right, equalleft, equalright, region, regions) => { // eslint-disable-line max-params
         expect(state).toEqual({
@@ -36,13 +37,13 @@ describe("Selectors", () => {
             disk: 3,
             ram: 2,
             vcpus: 1,
-            nodes: []
+            nodes: [REFERENCE_REGION]
         }, {
             public: true,
             disk: 4,
             ram: 5,
             vcpus: 8,
-            nodes: []
+            nodes: [REFERENCE_REGION]
         }];
         const privateflavors = [{
             public: false,
@@ -58,7 +59,7 @@ describe("Selectors", () => {
 
         const state = flavorSelectors(store.getState());
 
-        expecstate(state, true, [{public: true, disk: 4, ram: 5, vcpus: 8, nodes: []}], [], "", "", [], [], "region", ["region"]);
+        expecstate(state, true, [{public: true, disk: 4, ram: 5, vcpus: 8, nodes: ["Spain2"]}], [], "", "", [], [], "region", ["region"]);
     });
 
     it("select with non exist id return empty", () => {
@@ -68,14 +69,14 @@ describe("Selectors", () => {
             disk: 3,
             ram: 2,
             vcpus: 1,
-            nodes: []
+            nodes: [REFERENCE_REGION]
         }, {
             public: true,
             id: "345",
             disk: 4,
             ram: 5,
             vcpus: 8,
-            nodes: []
+            nodes: [REFERENCE_REGION]
         }];
         const privateflavors = [{
             public: false,
@@ -103,14 +104,14 @@ describe("Selectors", () => {
             disk: 3,
             ram: 2,
             vcpus: 1,
-            nodes: []
+            nodes: [REFERENCE_REGION]
         }, {
             public: true,
             id: "345",
             disk: 4,
             ram: 5,
             vcpus: 8,
-            nodes: []
+            nodes: [REFERENCE_REGION]
         }];
         const privateflavors = [{
             public: false,
@@ -138,14 +139,14 @@ describe("Selectors", () => {
             disk: 3,
             ram: 2,
             vcpus: 1,
-            nodes: []
+            nodes: [REFERENCE_REGION]
         }, {
             public: true,
             id: "345",
             disk: 4,
             ram: 5,
             vcpus: 8,
-            nodes: []
+            nodes: [REFERENCE_REGION]
         }];
         const privateflavors = [{
             public: false,
@@ -173,14 +174,14 @@ describe("Selectors", () => {
             disk: 3,
             ram: 2,
             vcpus: 1,
-            nodes: []
+            nodes: [REFERENCE_REGION]
         }, {
             public: true,
             id: "345",
             disk: 4,
             ram: 5,
             vcpus: 8,
-            nodes: []
+            nodes: [REFERENCE_REGION]
         }];
         const privateflavors = [{
             public: false,
@@ -215,14 +216,14 @@ describe("Selectors", () => {
             disk: 3,
             ram: 2,
             vcpus: 1,
-            nodes: []
+            nodes: [REFERENCE_REGION]
         }, {
             public: true,
             id: "345",
             disk: 4,
             ram: 5,
             vcpus: 8,
-            nodes: []
+            nodes: [REFERENCE_REGION]
         }];
         const privateflavors = [{
             public: false,
@@ -262,14 +263,14 @@ describe("Selectors", () => {
             disk: 3,
             ram: 2,
             vcpus: 1,
-            nodes: ["region1"]
+            nodes: [REFERENCE_REGION]
         }, {
             public: true,
             id: "345",
             disk: 4,
             ram: 5,
             vcpus: 8,
-            nodes: ["region2"]
+            nodes: [REFERENCE_REGION]
         }];
         const privateflavors = [{
             public: false,
