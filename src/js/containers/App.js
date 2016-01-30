@@ -163,7 +163,7 @@ class App extends Component {
     }
 
     makeRequest(preferences, url, method, postBody) {
-        let baseURL = App.API_URL;
+        let baseURL = preferences.serverUrl;
         const sub = new Rx.AsyncSubject();
         const onsucc = response => {
             sub.onNext(response);
@@ -201,11 +201,9 @@ class App extends Component {
     askflavors(preferences) {
 
         if (!this.adminRegions || !this.scopeToken) {
-            console.log("Could not get flavors. One or more required values missing.");
-            console.log("Admin regions: " + (true && this.adminRegions) + " Token: " + (true && this.scopeToken));
             return;
         }
-        console.log("Asking flavors...");
+
         const sub = this.makeRequest(preferences, "v1/flavors?public", "GET");
 
         sub.map(response => {
@@ -215,7 +213,7 @@ class App extends Component {
                 // Divide in public/private and set it
                 const privateflavors = data.filter(f => !f.public);
                 const publicflavors = data.filter(f => f.public);
-                console.log("Received flavors...");
+
                 // On OK just dispatch everything :)
                 // this.props.dispatch(setFlavors(data.flavors));
                 this.props.dispatch(setFlavors(publicflavors, privateflavors));
@@ -247,7 +245,7 @@ class App extends Component {
             }.bind(this)
         };
 
-        MashupPlatform.http.makeRequest(App.API_URL + "/v1/flavors/" + left, options);
+        MashupPlatform.http.makeRequest(this.getpreferences().serverUrl + "/v1/flavors/" + left, options);
     }
 
     deleteFlavor(successCallback) {
@@ -266,7 +264,7 @@ class App extends Component {
             }.bind(this)
         };
 
-        MashupPlatform.http.makeRequest(App.API_URL + "/v1/flavors/" + right);
+        MashupPlatform.http.makeRequest(this.getpreferences().serverUrl + "/v1/flavors/" + right);
     }
 
     replaceFlavor() {
@@ -382,7 +380,6 @@ class App extends Component {
 
 App.KEYSTONE_URL = "https://cloud.lab.fiware.org/keystone/v3";
 App.IDM_URL = "https://account.lab.fiware.org";
-App.API_URL = "http://private-anon-89daf8d02-fiwareflavorsync.apiary-mock.com";
 App.propTypes = {
     dispatch: PropTypes.func.isRequired,
     equalleft: PropTypes.array.isRequired,
