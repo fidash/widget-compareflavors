@@ -17,7 +17,6 @@ class App extends Component {
         this.MashupPlatform = window.MashupPlatform;
         this.getOpenStackToken.call(this, this.getProjects);
         this.getAdminRegions.call(this);
-        this.askflavors(this.getpreferences());
         this.MashupPlatform.prefs.registerCallback(() => {
             this.askflavors(this.getpreferences());
         });
@@ -66,6 +65,8 @@ class App extends Component {
                     }
                 }.bind(this));
                 this.props.dispatch(setRegions(adminRegions));
+                this.adminRegions = adminRegions;
+                this.askflavors(this.getpreferences());
 
             }.bind(this),
             onFailure: this.clearState.bind(this)
@@ -146,11 +147,12 @@ class App extends Component {
             onSuccess: function (response) {
                 let responseBody = JSON.parse(response.responseText);
                 if (responseBody.project.is_cloud_project) {
-                    this.getOpenStackToken(function (response) {
+                    this.getOpenStackToken(function (tokenResponse) {
 
                         // For now we only have one cloud project per user so we don't
                         // control the case of several cloud projects.
                         this.scopeToken = tokenResponse.getHeader('x-subject-token');
+                        this.askflavors(this.getpreferences());
                     }, project);
                 }
             }.bind(this),
@@ -161,7 +163,7 @@ class App extends Component {
     }
 
     makeRequest(preferences, url, method, postBody) {
-        let baseURL = preferences.serverUrl;
+        let baseURL = App.API_URL;
         const sub = new Rx.AsyncSubject();
         const onsucc = response => {
             sub.onNext(response);
@@ -197,81 +199,80 @@ class App extends Component {
     }
 
     askflavors(preferences) {
-        // const sub = this.makeRequest(preferences, "v1/flavors?public", "GET");
 
-        // sub.map(response => {
-        //     return JSON.parse(response.response);
-        // }).map(data => data.flavors)
-            // .map(
-            let data = [
-                {
-                // this map will be removed, this is to test things :)
-                disk: 3,
-                public: true,
-                name: "Public Small",
-                id: "random1",
-                ram: 512,
-                vcpus: 1,
-                nodes: ["Spain2"]
-            }, {
-                // this map will be removed, this is to test things :)
-                disk: 10,
-                public: true,
-                name: "Public Medium",
-                id: "random2",
-                ram: 1024,
-                vcpus: 2,
-                nodes: ["Spain2"]
-            }, {
-                // this map will be removed, this is to test things :)
-                disk: 30,
-                public: true,
-                name: "Public Large",
-                id: "random3",
-                ram: 4096,
-                vcpus: 4,
-                nodes: ["Spain2"]
-            }, {
-                disk: 3,
-                public: false,
-                name: "Private Small",
-                id: "random4",
-                ram: 512,
-                vcpus: 1,
-                nodes: ["Prague"]
-            }, {
-                // this map will be removed, this is to test things :)
-                disk: 10,
-                public: false,
-                name: "Private Medium",
-                id: "random5",
-                ram: 1024,
-                vcpus: 2,
-                nodes: ["Prague"]
-            }, {
-                // this map will be removed, this is to test things :)
-                disk: 30,
-                public: false,
-                name: "Private Large",
-                id: "random6",
-                ram: 4096,
-                vcpus: 4,
-                nodes: ["Prague"]
-            }];
-            // .subscribe(data => {
+        if (!this.adminRegions || !this.scopeToken) {
+            console.log("Could not get flavors. One or more required values missing.");
+            console.log("Admin regions: " + (true && this.adminRegions) + " Token: " + (true && this.scopeToken));
+            return;
+        }
+        console.log("Asking flavors...");
+        const sub = this.makeRequest(preferences, "v1/flavors?public", "GET");
+
+        sub.map(response => {
+            return JSON.parse(response.response);
+        }).map(data => data.flavors)
+            .subscribe(data => {
                 // Divide in public/private and set it
                 const privateflavors = data.filter(f => !f.public);
                 const publicflavors = data.filter(f => f.public);
-
+                console.log("Received flavors...");
                 // On OK just dispatch everything :)
                 // this.props.dispatch(setFlavors(data.flavors));
                 this.props.dispatch(setFlavors(publicflavors, privateflavors));
                 this.props.dispatch(clearLR());
-            // }, () => {
-                // On error, clean everything!
-            //     this.props.dispatch(setFlavors([], []));
-            //     this.props.dispatch(clearLR());
-            // });
+            }, () => {
+                //On error, clean everything!
+                this.props.dispatch(setFlavors([], []));
+                this.props.dispatch(clearLR());
+            });
+    }
+
+    copyFlavor() {
+        const {left, privateflavors, region} = this.props;
+        const options = {
+            method: "PUT",
+            requestHeaders: {
+                "Accept": "application/jsom",
+                "X-Auth-Token": this.scopeToken
+            },
+            postBody: {
+                "node": region
+            },
+            contentType: "application/json",
+            onFailure: error => {
+                console.log(error);
+            }.bind(this),
+            onSuccess: response => {
+                this.askflavors(this.getpreferences());
+            }.bind(this)
+        };
+
+        MashupPlatform.http.makeRequest(App.API_URL + "/v1/flavors/" + left, options);
+    }
+
+    deleteFlavor(successCallback) {
+        const {right, privateflavors, region} = this.props;
+        const options = {
+            method: "DELETE",
+            requestHeaders: {
+                "Accept": "application/json",
+                "X-Auth-Token": this.scopeToken
+            },
+            onFailure: error => {
+                console.log(error);
+            },
+            onSuccess: response => {
+                successCallback();
+            }.bind(this)
+        };
+
+        MashupPlatform.http.makeRequest(App.API_URL + "/v1/flavors/" + right);
+    }
+
+    replaceFlavor() {
+        this.deleteFlavor(response => {
+            this.copyFlavor();
+        });
     }
 
     handleFlavorClick(dispatchf, data) {
@@ -292,7 +293,7 @@ class App extends Component {
                 let tosend = {};
 
                 if (typeof myobj === "undefined" || typeof otherobj === "undefined") {
-                    window.console.error("Not find?");
+                    window.console.error("Not found?");
                     return;
                 }
 
@@ -323,7 +324,7 @@ class App extends Component {
                 float: float,
                 textAlign: "center",
                 width: "50%",
-                "margin-top": "49px"
+                marginTop: "49px"
             };
         };
         const divStyleL = buildDivStyle("left");
@@ -349,9 +350,9 @@ class App extends Component {
                   filter={filter}
                   onClearClick={() => dispatch(clearLR())}
                   onFilterClick={() => dispatch(toggleVisibility())}
-                  onDeleteFlavor={() => dispatch(deleteFlavor(right))}
-                  onCopyFlavor={() => dispatch(copyFlavor(left, region))}
-                  onReplaceFlavor={() => dispatch(replaceFlavor(left, right, region))}/>
+                  onDeleteFlavor={this.deleteFlavor.bind(this, response => this.askflavors(this.getpreferences()))}
+                  onCopyFlavor={this.copyFlavor.bind(this)}
+                  onReplaceFlavor={this.replaceFlavor.bind(this)}/>
               <div>
                 <div style={divStyleL}>
                   <Label className="fixedHeaderL">Public Flavors</Label>
@@ -381,6 +382,7 @@ class App extends Component {
 
 App.KEYSTONE_URL = "https://cloud.lab.fiware.org/keystone/v3";
 App.IDM_URL = "https://account.lab.fiware.org";
+App.API_URL = "http://private-anon-89daf8d02-fiwareflavorsync.apiary-mock.com";
 App.propTypes = {
     dispatch: PropTypes.func.isRequired,
     equalleft: PropTypes.array.isRequired,
