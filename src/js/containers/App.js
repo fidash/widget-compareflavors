@@ -341,7 +341,7 @@ class App extends Component {
         return (
             <div>
               <Header
-                  canclear={left !== ""}
+                  canclear={left !== "" || right !== ""}
                   candelete={right !== ""}
                   canreplace={left !== "" && right !== ""}
                   cancopy={left !== ""}
