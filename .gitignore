@@ -9,3 +9,4 @@ coverage/
 _SpecRunner.html
 .grunt/
 src/jspm_packages
+dist/

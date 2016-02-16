@@ -1,7 +1,7 @@
 {
-  "name": "CompareFlavors-widget",
+    "name": "CompareFlavors-widget",
   "description": "This is the widget for compare flavors",
-  "version": "0.6.0",
+  "version": "0.9.0",
   "homepage": "https://github.com/fidash/widget-compareflavors",
   "author": {
     "name": "Miguel Garcia",
@@ -14,12 +14,7 @@
   "bugs": {
     "url": "https://github.com/fidash/widget-compareflavors/issues"
   },
-  "licenses": [
-    {
-      "type": "apache",
-      "url": "https://github.com/fidash/widget-compareflavors/blob/master/LICENSE"
-    }
-  ],
+    "license": "Apache-2.0",
   "scripts": {
     "start": "node server.js",
     "build": "webpack --config webpack-production.config.js --progress --profile --colors",
